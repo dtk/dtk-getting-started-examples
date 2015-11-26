@@ -1,12 +1,33 @@
 ## Using task status to follow deployment of service
-In order to deploy services, service modules must first be intsalled from the DTK Catalog manager. Below shows intsllation of a Service Module for deployiong spark clusters
+When a service instance is task is launaced that is used to keep track of its execution. The intercation model is asynchrnous maning the user can be performing other actions in teh DTK shell while teh task is executing. To check the progress of execution the user can use the 'task_status' command in a service instance context. In this example there is only one service isntance 'spark-cluster1', but other ways that the DTK can be used is to simultaneously deploy a set of service isntances and then navigate between them to see teh status of each
 
-cut-and-paste
+The task status command provides three different user interaction modes that are selected with different command lines options. These are
+* See a snapshot of the task progress
 ```
-cd service-module
-install bigtop:spark
+task-status
 ```
-with outputs
+* Put the DTK shell in Linux top-like mode to advance the progress; this mode is left after the task compltes in either success, failure, or because it was teminated by the user or the user in the wants switch out of top mode using ^D
+```
+task-status --wait
+```
+* Have the client block and stream the results as they are produced stage by stage
+```
+task-status -m stream
+```
+
+
+A Service module has one or more 'assemblies', each of which captures one or more services and/or applications and how the service daemons and application components map to one or more nodes. We refer to this node mapping as an application topology, which can run the gambit from a single node to a cluster with master and slave nodes to a complex high-availability configuration along with monitoring, security and other support services. In the example service module 'bigtop:spark' there is a single assembly named 'cluster', which has a master/slave topology supporting a Spark and HDFS service.
+
+In the example below an assembly is 'deployed' meaning that its actual execution on EC2 is initiated when the user hits 'deploy'. A user can deploy the same assembly multiple times to deploy multiple copies of the assembly.  It is analogous to in EC2 launching an instance from an image, but in this case the deployed entity can have multiple nodes. This deployed entity is referred to as a 'service instance'. As an alternative to deploying an assembly in a single operation, the user can also first 'stage' the assembly to form a service instance that is not yet launched then set parameters or otherwise customize the service instance before actual launching it (see ...)
+
+
+**Cut-and-paste**
+
+Navigate to 'bigtop:spark'service module and list its assemblies
+```
+cd /service-module/bigtop:spark
+list-assemblies
+
 ```
 dtk:/service/spark-cluster1>task-status
 +----------------------------------+-----------+---------------+----------+-------------------+-------------------+
