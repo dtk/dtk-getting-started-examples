@@ -1,12 +1,12 @@
 ## Using task status to follow deployment of service
-When a service instance is task is launaced that is used to keep track of its execution. The intercation model is asynchrnous maning the user can be performing other actions in teh DTK shell while teh task is executing. To check the progress of execution the user can use the 'task_status' command in a service instance context. In this example there is only one service isntance 'spark-cluster1', but other ways that the DTK can be used is to simultaneously deploy a set of service isntances and then navigate between them to see teh status of each
+When a service instance is launched a task is used to keep track of its execution. The user interaction model is asynchronous meaning the user can be performing otheractions in the DTK shell while the task is executing. To check the progress of execution the user can use the 'task_status' command in a service instance context. In this example there is only one service instance 'spark-cluster1', but teh DTK user could also have simultaneously deployed a set of service instances and then navigate between them to see the status of each
 
 The task status command provides three different user interaction modes that are selected with different command lines options. These are
 * See a snapshot of the task progress
 ```
 task-status
 ```
-* Put the DTK shell in Linux top-like mode to advance the progress; this mode is left after the task compltes in either success, failure, or because it was teminated by the user or the user in the wants switch out of top mode using ^D
+* Put the DTK shell in Linux top-like mode to advance the progress; this mode is left after the task completes in either success, failure, or because it was teminated by the user or the user in the wants switch out of top mode using ^D
 ```
 task-status --wait
 ```
@@ -15,21 +15,13 @@ task-status --wait
 task-status -m stream
 ```
 
-
-A Service module has one or more 'assemblies', each of which captures one or more services and/or applications and how the service daemons and application components map to one or more nodes. We refer to this node mapping as an application topology, which can run the gambit from a single node to a cluster with master and slave nodes to a complex high-availability configuration along with monitoring, security and other support services. In the example service module 'bigtop:spark' there is a single assembly named 'cluster', which has a master/slave topology supporting a Spark and HDFS service.
-
-In the example below an assembly is 'deployed' meaning that its actual execution on EC2 is initiated when the user hits 'deploy'. A user can deploy the same assembly multiple times to deploy multiple copies of the assembly.  It is analogous to in EC2 launching an instance from an image, but in this case the deployed entity can have multiple nodes. This deployed entity is referred to as a 'service instance'. As an alternative to deploying an assembly in a single operation, the user can also first 'stage' the assembly to form a service instance that is not yet launched then set parameters or otherwise customize the service instance before actual launching it (see ...)
-
-
-**Cut-and-paste**
-
-Navigate to 'bigtop:spark'service module and list its assemblies
+So as an example, the user can navigate to the service instance 'spark-cluster1' and then see a snaphsot of progress using the commands:
 ```
-cd /service-module/bigtop:spark
-list-assemblies
-
+cd /service/spark-cluster1
+task-status
 ```
-dtk:/service/spark-cluster1>task-status
+The result can look like
+```
 +----------------------------------+-----------+---------------+----------+-------------------+-------------------+
 | TASK TYPE                        | STATUS    | NODE          | DURATION | STARTED AT        | ENDED AT          |
 +----------------------------------+-----------+---------------+----------+-------------------+-------------------+
@@ -73,3 +65,114 @@ dtk:/service/spark-cluster1>task-status
 +----------------------------------+-----------+---------------+----------+-------------------+-------------------+
 37 rows in set
 ```
+This shows the deployment of teh cluster, which is providing both Spark and HDFS services in teh midst of execution. When an assembly is deployed for the first time in an EC2 environment the first stage creates all the needed nodes and the subsequent stages perform configuration or test actions. The exact steps performed are captured by workflows described in teh Service module DSL (see ...)
+
+An example of using the stream format is 
+```
+dtk:/service/spark-cluster1>task-status -m stream
+========================= 2015-11-26 17:16:55 +0000 start 'assembly_converge' =========================
+
+
+============================================================
+STAGE 1: create_nodes_stage
+TIME START: 2015-11-26 17:16:55 +0000
+OPERATION: CreateNodes
+  master
+  slaves:1
+  slaves:2
+STATUS: succeeded
+DURATION: 83.8s
+------------------------------------------------------------
+
+============================================================
+STAGE 2: bigtop_multiservice
+TIME START: 2015-11-26 17:18:19 +0000
+COMPONENT: assembly_wide/bigtop_multiservice
+STATUS: succeeded
+DURATION: 0.0s
+------------------------------------------------------------
+
+============================================================
+STAGE 3: bigtop hiera
+TIME START: 2015-11-26 17:18:29 +0000
+COMPONENTS:
+  node-group:slaves/bigtop_multiservice::hiera
+  master/bigtop_multiservice::hiera
+STATUS: succeeded
+DURATION: 5.4s
+------------------------------------------------------------
+
+============================================================
+STAGE 4: bigtop_base
+TIME START: 2015-11-26 17:18:35 +0000
+COMPONENTS:
+  node-group:slaves/bigtop_base
+  master/bigtop_base
+STATUS: succeeded
+DURATION: 5.8s
+------------------------------------------------------------
+
+============================================================
+STAGE 5: namenode
+TIME START: 2015-11-26 17:18:41 +0000
+COMPONENT: master/hadoop::namenode
+STATUS: succeeded
+DURATION: 45.5s
+------------------------------------------------------------
+
+============================================================
+STAGE 6: if needed leave safemode
+TIME START: 2015-11-26 17:19:27 +0000
+ACTION: master/hadoop::namenode.leave_safemode
+STATUS: succeeded
+DURATION: 3.5s
+RESULTS:
+
+NODE: master
+RUN: su hdfs -c 'hdfs dfsadmin -safemode leave' (syscall)
+RETURN CODE: 0
+STDOUT:
+  Safe mode is OFF
+
+------------------------------------------------------------
+
+============================================================
+STAGE 7: namenode smoke test
+TIME START: 2015-11-26 17:19:30 +0000
+ACTION: master/hadoop::namenode.smoke_test
+STATUS: succeeded
+DURATION: 2.2s
+RESULTS:
+
+NODE: master
+RUN: echo "namenode port=8020" (syscall)
+RETURN CODE: 0
+STDOUT:
+  namenode port=8020
+--
+RUN: netstat -nltp | grep 8020 (syscall)
+RETURN CODE: 0
+STDOUT:
+  tcp        0      0 10.90.0.238:8020            0.0.0.0:*                   LISTEN      3637/java
+--
+RUN: su hdfs -c "hdfs dfsadmin -safemode get" | grep OFF (syscall)
+RETURN CODE: 0
+STDOUT:
+  Safe mode is OFF
+
+------------------------------------------------------------
+
+============================================================
+STAGE 8: datanodes
+TIME START: 2015-11-26 17:19:33 +0000
+COMPONENTS:
+  node-group:slaves/hadoop::common_hdfs
+  node-group:slaves/hadoop::datanode
+STATUS: succeeded
+DURATION: 33.0s
+------------------------------------------------------------
+...
+```
+If this is executed after stpes have actual been executed it wil still show teh earlier steps that had executed
+
+
