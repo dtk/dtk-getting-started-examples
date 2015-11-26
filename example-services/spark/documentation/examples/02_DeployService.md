@@ -10,16 +10,19 @@ Navigate to 'bigtop:spark'service module and list its assemblies
 ```
 cd /service-module/bigtop:spark
 list-assemblies
+
 ```
 Navigate to the 'cluster' assembly and deploy this cluster as service instance with name 'spark-cluster1'
 ```
 cd assembly/cluster
 deploy spark-cluster1
+
 ```
 Navigate to the service instance context and list the set of service instances'services, which in this case wil show a single siervice instance that is in 'running' state
 ```
 cd /service
 ls
+
 ```
 **Commands and responses**
 ```
