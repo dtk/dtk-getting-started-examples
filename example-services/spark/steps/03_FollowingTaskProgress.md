@@ -1,5 +1,5 @@
 ## Using task status to follow deployment of service
-When a service instance is launched a task is used to keep track of its execution. The user interaction model is asynchronous meaning the user can be performing otheractions in the DTK shell while the task is executing. To check the progress of execution the user can use the 'task_status' command in a service instance context. In this example there is only one service instance 'spark-cluster1', but teh DTK user could also have simultaneously deployed a set of service instances and then navigate between them to see the status of each
+When a service instance is launched, a task is used to keep track of its execution. The user interaction model is asynchronous meaning the user can be performing othera actions in the DTK shell while the task is executing. To check the progress of execution the user can use the 'task-status' command in a service instance context. In this example there is only one service instance 'spark-cluster1', but the DTK user could have simultaneously deployed a set of service instances and then navigate between them to see the status of each
 
 The task status command provides three different user interaction modes that are selected with different command lines options. These are
 * See a snapshot of the task progress
@@ -65,7 +65,7 @@ The result can look like
 +----------------------------------+-----------+---------------+----------+-------------------+-------------------+
 37 rows in set
 ```
-This shows the deployment of teh cluster, which is providing both Spark and HDFS services in teh midst of execution. When an assembly is deployed for the first time in an EC2 environment the first stage creates all the needed nodes and the subsequent stages perform configuration or test actions. The exact steps performed are captured by workflows described in teh Service module DSL (see ...)
+This shows the deployment of the cluster, which is providing both Spark and HDFS services in the midst of execution. When an assembly is deployed for the first time in an EC2 environment the first stage creates all the needed nodes and the subsequent stages perform configuration or test actions. The exact steps performed are captured by workflows described in the Service module DSL (see ...)
 
 An example of using the stream format is 
 ```
@@ -173,6 +173,6 @@ DURATION: 33.0s
 ------------------------------------------------------------
 ...
 ```
-If this is executed after stpes have actual been executed it wil still show teh earlier steps that had executed
+If 'task-status -m stream' is invoked after steps have actual been executed it will stil show the earlier steps that had executed
 
 
