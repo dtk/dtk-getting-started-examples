@@ -5,6 +5,7 @@ In the example below an assembly is 'deployed' meaning that its actual execution
 
 
 **Cut-and-paste**
+
 Navigate to 'bigtop:spark'service module and list its assemblies
 ```
 cd /service-module/bigtop:spark
