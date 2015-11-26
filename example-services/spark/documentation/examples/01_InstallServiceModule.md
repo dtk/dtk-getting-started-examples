@@ -1,7 +1,7 @@
 ## Install the Spark service module
 In order to deploy services, service modules must first be installed from the DTK Catalog manager. Below shows installation of a service module that is used to deploy spark clusters
 
-In the text below and through the examples we both the commands in a form so they can be cut and paste and the full interactive session with user commands and the DTK responses. We assume that user first entered the dtk shell from teh LInux command line
+In the text below and throughout the examples we provide both the commands in a form so they can be cut and paste and the full interactive session with user commands and the DTK responses. We assume that user first entered the dtk shell from the LInux command line
 ```
 user@host:~$ dtk-shell
 dtk:/>
