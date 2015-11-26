@@ -18,14 +18,14 @@ dtk:/service/spark-cluster1>task-status
 |       3.1.2 configure_node       | succeeded | slaves:2      | 3.1s     | 17:18:31 26/11/15 | 17:18:35 26/11/15 |
 ...
 ```
-The top level line 'assemblly' converge' indicates the summay status.
-To see the status of all teh service instances the user can do a list command at the service level context by issing the following commands:
+The top level row 'assembly' converge' indicates the summary status of the task as a whole.
+As an alternative, to see the status of all the service instances the user can do a list command at the service level context by issing the following commands:
 ```
 cd /service
 ls
 
 ```
-With sample eresults
+The results can look like
 ```
 +------------+----------------+---------+-----------+-------------------------------+---------------+---------+-------------------+
 | ID         | ASSEMBLY NAME  | STATUS  | LAST RUN  | ASSEMBLY TEMPLATE             | TARGET        | # NODES | CREATED AT        |
@@ -35,8 +35,8 @@ With sample eresults
 1 row in set
 
 ```
-The 'LAST RUN' column shows the status of the last run task. The 'STATUS' column indicates whether the service instance is powered on ('RUNNING'), powered off ('stopped') or staged and not yet executed 
-As an example of a scenario where along with 'spark-cluster1' the user first staged but did not execute a second spark cluster 'spark-cluster2'
+The 'LAST RUN' column shows the status of the last run task. The 'STATUS' column indicates whether the service instance is powered on ('running'), powered off ('stopped') or staged and not yet executed ('pending').
+As an example of a scenario where along with 'spark-cluster1' the user  also staged but did not yet execute a second spark cluster 'spark-cluster2'
 ```
 +------------+----------------+---------+-----------+-------------------------------+---------------+---------+-------------------+
 | ID         | ASSEMBLY NAME  | STATUS  | LAST RUN  | ASSEMBLY TEMPLATE             | TARGET        | # NODES | CREATED AT        |
@@ -45,4 +45,4 @@ As an example of a scenario where along with 'spark-cluster1' the user first sta
 | 2147494146 | spark-cluster2 | pending |           | bigtop:spark/assembly/cluster | vpc-us-east-1 | 3       | 18:03:51 26/11/15 |
 +------------+----------------+---------+-----------+-------------------------------+---------------+---------+-------------------+
 ```
-Since no tasks have been run yet 'LAST RUN" has no value
+Since no tasks have been run yet for 'spark-cluster2' teh cloun 'LAST RUN' has no value
