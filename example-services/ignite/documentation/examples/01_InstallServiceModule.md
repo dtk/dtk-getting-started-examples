@@ -1,7 +1,5 @@
-## Install the Spark service module
-In order to deploy services, service modules must first be installed from the DTK Catalog manager. Below shows installation of a service module that is used to deploy spark clusters
-
-In the text below and through the examples we both the commands in a form so they can be cut and paste and the full interactive session with user commands and the DTK responses. We assume that user first entered the dtk shell from teh LInux command line
+## Install the Ignite service module
+We assume that user first entered the dtk shell from the LInux command line
 ```
 user@host:~$ dtk-shell
 dtk:/>
@@ -9,65 +7,40 @@ dtk:/>
 
 **Cut-and-paste**
 
-Navigate to service module context and then install the service module 'bigtop:spark'
+Navigate to service module context and then install the service module 'bigtop:spark'. We assume this module is installed after spark has been installed (although not necssary). In this case a prompt will be appear
+```
+Do you want to update dependent component module 'maestrodev:wget' from the catalog? (yes/no/all/none):
+```
+This prompt will be produced if service module being installed has dependent component modules that are common to ones shared already. This prompt will appear for each dependent component module that is already installed unless 'none' or 'all' is selecetd which is response for all dependent modules (see .. for discussion on updating shared modules)
+So to install ignite, user can cut and paste
 ```
 cd /service-module
-install bigtop:spark
-```
-List the service modules to show the installed service module and then navigate to the component module context to show the component modules that get installed as dependencies when installing the service module
-```
-ls
-cd /component-module
-ls
+install bigtop:ignite
+none
+
 ```
 
 **Commands and responses**
 ```
 dtk:/>cd /service-module
-dtk:/service-module>install bigtop:spark
+dtk:/service-module>cd /service-module
+dtk:/service-module>install bigtop:ignite
 Auto-installing missing module(s)
-Installing component module 'maestrodev:wget' ... Done.
-Installing component module 'dtk:dtk_util' ... Done.
-Installing component module 'puppetlabs:stdlib' ... Done.
-Installing component module 'bigtop:kerberos' ... Done.
-Installing component module 'bigtop:bigtop_toolchain' ... Done.
-Installing component module 'bigtop:dataset' ... Done.
-Installing component module 'maestrodev:maven' ... Done.
-Installing component module 'dtk:host' ... Done.
-Installing component module 'bigtop-new:spark' ... Done.
-Installing component module 'bigtop-new:hadoop' ... Done.
-Installing component module 'datasets:gitarchive' ... Done.
-Installing component module 'bigtop:bigtop_multiservice' ... Done.
-Installing component module 'bigtop-new:bigtop_base' ... Done.
-Resuming DTK Network import for service_module 'bigtop:spark' ... Done
-module_directory: /home/dtk614-rich/dtk/service_modules/bigtop/spark
-
-dtk:/service-module>ls
-+------------+--------------+---------------------+------------+
-| ID         | NAME         | REMOTE(S)           | DSL PARSED |
-+------------+--------------+---------------------+------------+
-| 2147491114 | bigtop:spark | dtkn://bigtop/spark | true       |
-+------------+--------------+---------------------+------------+
-1 row in set
-
-dtk:/service-module>cd /component-module
-dtk:/component-module>ls
-+------------+----------------------------+-------------------------------------------------------------------------+------------+
-| ID         | NAME                       | REMOTE(S)                                                               | DSL PARSED |
-+------------+----------------------------+-------------------------------------------------------------------------+------------+
-| 2147491096 | bigtop-new:bigtop_base     | dtkn://bigtop-new/bigtop_base                                           | true       |
-| 2147490947 | bigtop-new:hadoop          | dtkn://bigtop-new/hadoop                                                | true       |
-| 2147490855 | bigtop-new:spark           | dtkn://bigtop-new/spark                                                 | true       |
-| 2147491068 | bigtop:bigtop_multiservice | dtkn://bigtop/bigtop_multiservice                                       | true       |
-| 2147490664 | bigtop:bigtop_toolchain    | dtkn://bigtop/bigtop_toolchain                                          | true       |
-| 2147490703 | bigtop:dataset             | dtkn://bigtop/dataset                                                   | true       |
-| 2147490647 | bigtop:kerberos            | dtkn://bigtop/kerberos                                                  | true       |
-| 2147491042 | datasets:gitarchive        | dtkn://datasets/gitarchive                                              | true       |
-| 2147490253 | dtk:dtk_util               | dtkn://dtk/dtk_util                                                     | true       |
-| 2147490841 | dtk:host                   | dtkn://dtk/host                                                         | true       |
-| 2147490732 | maestrodev:maven           | dtkn://maestrodev/maven, http://github.com/maestrodev/puppet-maven      | true       |
-| 2147490187 | maestrodev:wget            | dtkn://maestrodev/wget, https://github.com/maestrodev/puppet-wget.git   | true       |
-| 2147490281 | puppetlabs:stdlib          | dtkn://puppetlabs/stdlib, git://github.com/puppetlabs/puppetlabs-stdlib | true       |
-+------------+----------------------------+-------------------------------------------------------------------------+------------+
-13 rows in set
+Using component module 'maestrodev:wget'
+Do you want to update dependent component module 'maestrodev:wget' from the catalog? (yes/no/all/none): none
+Using component module 'dtk:dtk_util'
+Using component module 'puppetlabs:stdlib'
+Using component module 'bigtop:kerberos'
+Using component module 'bigtop:bigtop_toolchain'
+Using component module 'maestrodev:maven'
+Using component module 'bigtop:dataset'
+Using component module 'dtk:host'
+Using component module 'bigtop-new:spark'
+Using component module 'bigtop-new:hadoop'
+Using component module 'datasets:gitarchive'
+Using component module 'bigtop:bigtop_multiservice'
+Using component module 'bigtop-new:bigtop_base'
+Installing component module 'bigtop:ignite' ... Done.
+Resuming DTK Network import for service_module 'bigtop:ignite' ... Done
+module_directory: /home/dtk614-rich/dtk/service_modules/bigtop/ignite
 ```
