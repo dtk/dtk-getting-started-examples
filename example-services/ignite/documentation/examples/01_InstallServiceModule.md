@@ -3,7 +3,7 @@ In order to deploy services, service modules must first be installed from the DT
 
 In the text below and through the examples we both the commands in a form so they can be cut and paste and the full interactive session with user commands and the DTK responses. We assume that user first entered the dtk shell from teh LInux command line
 ```
-user@hosr:~$ dtk-shell
+user@host:~$ dtk-shell
 dtk:/>
 ```
 
