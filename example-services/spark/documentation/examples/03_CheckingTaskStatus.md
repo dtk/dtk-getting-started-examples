@@ -1,4 +1,4 @@
-## Install the Spark service module
+## Using task status to follow deployment of service
 In order to deploy services, service modules must first be intsalled from the DTK Catalog manager. Below shows intsllation of a Service Module for deployiong spark clusters
 
 cut-and-paste
@@ -8,85 +8,47 @@ install bigtop:spark
 ```
 with outputs
 ```
-dtk:/>cd service-module
-dtk:/service-module>install bigtop:spark
-Auto-installing missing module(s)
-Installing component module 'maestrodev:wget' ... Done.
-Installing component module 'dtk:dtk_util' ... Done.
-Installing component module 'puppetlabs:stdlib' ... Done.
-Installing component module 'bigtop:kerberos' ... Done.
-Installing component module 'bigtop:bigtop_toolchain' ... Done.
-Installing component module 'bigtop:dataset' ... Done.
-Installing component module 'maestrodev:maven' ... Done.
-Installing component module 'dtk:host' ... Done.
-Installing component module 'bigtop-new:spark' ... Done.
-Installing component module 'bigtop-new:hadoop' ... Done.
-Installing component module 'datasets:gitarchive' ... Done.
-Installing component module 'bigtop:bigtop_multiservice' ... Done.
-Installing component module 'bigtop-new:bigtop_base' ... Done.
-Resuming DTK Network import for service_module 'bigtop:spark' ... Done
-module_directory: /home/dtk614-rich/dtk/service_modules/bigtop/spark
-```
-## List and deploy 'Assemblies' 
-A Service module has one or more 'assemblies', which cab represent different application toolpgies such as a cluster, asingle node, a High-Availability configuration, etc. The example below shows a service module with assembly that is a cluster running both Spark and HDFS. A single assembly can be deployed one or multiple times to for example create clusters for each developer or for different ops environments. In the example below an assembly is 'deployed' meaning that its actual execution on EC2 is iniiated. Each time an assembly is deployed a new service instance is created. As an altrnative to dircetly deploying an assembly, the user can also first 'stage' the assembly to form a service insnace taht is not yet launched then set paramters or otehrwise customzie the service isnatnce before actual launching it (see ...)
-
-Cut-and-paste to 
-- List service modules
-- Navigate to 'bigtop:spark'service module and list its assemblies
-- Deploy assembly with name 'cluster' and name teh service instance spark-cluster1
-- Navigate to 'service context to if new service is running'
-```
-cd /service-module
-ls
-cd bigtop:spark
-list-assemblies
-cd assembly/cluster
-deploy spark-cluster1
-cd /service
-ls
-```
-
-### List service modules
-```
-dtk:/service-module>list
-+------------+--------------+---------------------+------------+
-| ID         | NAME         | REMOTE(S)           | DSL PARSED |
-+------------+--------------+---------------------+------------+
-| 2147491114 | bigtop:spark | dtkn://bigtop/spark | true       |
-+------------+--------------+---------------------+------------+
-1 row in set
-
-```
-### Navigate to 'bigtop:spark' service module and list its assemblies
-```
-dtk:/service-module>cd bigtop:spark
-dtk:/service-module/bigtop:spark>list-assemblies
-+------------+---------------+-------+---------------+
-| ID         | ASSEMBLY NAME | NODES | DESCRIPTION   |
-+------------+---------------+-------+---------------+
-| 2147491121 | cluster       | 3     | spark cluster |
-+------------+---------------+-------+---------------+
-1 row in set
-
-```
-### Deploy assembly with name 'cluster' and name teh service instance spark-cluster1
-```
-dtk:/service-module/bigtop:spark>cd assembly/cluster
-dtk:/service-module/bigtop:spark/assembly/cluster>deploy spark-cluster1
-  2147491171
-  assembly_instance_name: spark-cluster1
-  task_id: 2147491402
-
-```
-### Navigate to 'service context to if new service is running'
-```
-dtk:/service-module/bigtop:spark/assembly/cluster>cd /service
-dtk:/service>ls
-+------------+----------------+---------+-----------+-------------------------------+---------------+---------+-------------------+
-| ID         | ASSEMBLY NAME  | STATUS  | LAST RUN  | ASSEMBLY TEMPLATE             | TARGET        | # NODES | CREATED AT        |
-+------------+----------------+---------+-----------+-------------------------------+---------------+---------+-------------------+
-| 2147491171 | spark-cluster1 | running | executing | bigtop:spark/assembly/cluster | vpc-us-east-1 | 3       | 02:03:51 26/11/15 |
-+------------+----------------+---------+-----------+-------------------------------+---------------+---------+-------------------+
-1 row in set
-
+dtk:/service/spark-cluster1>task-status
++----------------------------------+-----------+---------------+----------+-------------------+-------------------+
+| TASK TYPE                        | STATUS    | NODE          | DURATION | STARTED AT        | ENDED AT          |
++----------------------------------+-----------+---------------+----------+-------------------+-------------------+
+| assembly_converge                | executing |               |          | 17:16:55 26/11/15 |                   |
+|   1 create_nodes_stage           | succeeded |               | 83.8s    | 17:16:55 26/11/15 | 17:18:18 26/11/15 |
+|     1.1 create_node              | succeeded | master        | 82.0s    | 17:16:55 26/11/15 | 17:18:17 26/11/15 |
+|     1.2 create_node              | succeeded | slaves:1      | 83.8s    | 17:16:55 26/11/15 | 17:18:18 26/11/15 |
+|     1.3 create_node              | succeeded | slaves:2      | 82.8s    | 17:16:55 26/11/15 | 17:18:17 26/11/15 |
+|   2 bigtop_multiservice          | succeeded |               | 0.0s     | 17:18:19 26/11/15 | 17:18:19 26/11/15 |
+|     2.1 configure_node           | succeeded | assembly_wide | 0.0s     | 17:18:19 26/11/15 | 17:18:19 26/11/15 |
+|   3 bigtop hiera                 | succeeded |               | 5.4s     | 17:18:29 26/11/15 | 17:18:35 26/11/15 |
+|     3.1 configure_nodegroup      | succeeded | slaves        | 5.3s     | 17:18:29 26/11/15 | 17:18:35 26/11/15 |
+|       3.1.1 configure_node       | succeeded | slaves:1      | 3.4s     | 17:18:29 26/11/15 | 17:18:33 26/11/15 |
+|       3.1.2 configure_node       | succeeded | slaves:2      | 3.1s     | 17:18:31 26/11/15 | 17:18:35 26/11/15 |
+|     3.2 configure_node           | succeeded | master        | 3.3s     | 17:18:29 26/11/15 | 17:18:32 26/11/15 |
+|   4 bigtop_base                  | succeeded |               | 5.8s     | 17:18:35 26/11/15 | 17:18:41 26/11/15 |
+|     4.1 configure_nodegroup      | succeeded | slaves        | 5.5s     | 17:18:35 26/11/15 | 17:18:41 26/11/15 |
+|       4.1.1 configure_node       | succeeded | slaves:1      | 5.3s     | 17:18:35 26/11/15 | 17:18:40 26/11/15 |
+|       4.1.2 configure_node       | succeeded | slaves:2      | 5.3s     | 17:18:35 26/11/15 | 17:18:41 26/11/15 |
+|     4.2 configure_node           | succeeded | master        | 5.3s     | 17:18:35 26/11/15 | 17:18:40 26/11/15 |
+|   5 namenode                     | executing |               |          | 17:18:41 26/11/15 |                   |
+|     5.1 configure_node           | executing | master        |          | 17:18:41 26/11/15 |                   |
+|   6 if needed leave safemode     |           |               |          |                   |                   |
+|     6.1 action                   |           | master        |          |                   |                   |
+|   7 namenode smoke test          |           |               |          |                   |                   |
+|     7.1 action                   |           | master        |          |                   |                   |
+|   8 datanodes                    |           |               |          |                   |                   |
+|     8.1 configure_nodegroup      |           | slaves        |          |                   |                   |
+|       8.1.1 configure_node       |           | slaves:1      |          |                   |                   |
+|       8.1.2 configure_node       |           | slaves:2      |          |                   |                   |
+|   9 hdfs directories for spark   |           |               |          |                   |                   |
+|     9.1 configure_node           |           | master        |          |                   |                   |
+|   10 spark master                |           |               |          |                   |                   |
+|     10.1 configure_node          |           | master        |          |                   |                   |
+|   11 spark workers               |           |               |          |                   |                   |
+|     11.1 configure_nodegroup     |           | slaves        |          |                   |                   |
+|       11.1.1 configure_node      |           | slaves:1      |          |                   |                   |
+|       11.1.2 configure_node      |           | slaves:2      |          |                   |                   |
+|   12 component gitarchive[mar01] |           |               |          |                   |                   |
+|     12.1 configure_node          |           | master        |          |                   |                   |
++----------------------------------+-----------+---------------+----------+-------------------+-------------------+
+37 rows in set
 ```
