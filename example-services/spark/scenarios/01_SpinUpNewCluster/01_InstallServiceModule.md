@@ -13,12 +13,14 @@ Navigate to service module context and then install the service module 'bigtop:s
 ```
 cd /service-module
 install bigtop:spark
+
 ```
 List the service modules to show the installed service module and then navigate to the component module context to show the component modules that get installed as dependencies when installing the service module
 ```
 ls
 cd /component-module
 ls
+
 ```
 
 **Commands and responses**
