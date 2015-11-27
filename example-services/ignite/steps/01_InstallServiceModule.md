@@ -18,8 +18,7 @@ install bigtop:ignite
 none
 
 ```
-
-**Commands and responses**
+The full commands and responses will look like:
 ```
 dtk:/>cd /service-module
 dtk:/service-module>cd /service-module
