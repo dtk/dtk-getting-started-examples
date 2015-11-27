@@ -86,8 +86,8 @@ In the examples above the login user is omitted. The DTK shell tries to automati
 NODE ssh -i LOGIN-USER [-i ABSOLUTE-PATH-TO-PEM]
 ```
 
-## Using the Spark Shell
-For the particular spark cluster that is spun up in this example teh user can enter the spark shell by executing the following commands:
+## Accessing the Spark Shell
+For the spark cluster that is spun up in this example the user can enter the spark shell by executing the following commands:
 ```
 dtk:/service/spark-cluster1>master ssh
 You are entering SSH terminal (ec2-user@ec2-54-88-11-179.compute-1.amazonaws.com) ...
@@ -117,6 +117,4 @@ Type :help for more information.
 15/11/27 05:30:05 WARN MetricsSystem: Using default name DAGScheduler for source because spark.app.id is not set.
 Spark context available as sc.
 ...
-```
-
 ```
