@@ -1,0 +1,18 @@
+---
+module: host
+dsl_version: 1.0.0
+components:
+  hostname:
+    attributes:
+      hostname:
+        type: string
+        required: true
+    actions:
+      create:
+        puppet_class: host::hostname
+
+  dtk_hostname:
+    descriptrtion: Use dtk node name as host name
+    actions:
+      create:
+        puppet_class: host::hostname

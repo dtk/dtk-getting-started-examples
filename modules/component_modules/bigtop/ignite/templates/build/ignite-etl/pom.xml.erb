@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId><%= @etl_group_id %></groupId>
+    <artifactId><%= @etl_artifact_id %></artifactId>
+    <version><%=  @etl__version %></version>
+
+    <packaging>jar</packaging>
+    <dependencies>
+      <dependency>
+        <groupId><%= @cache_object_group_id %></groupId>
+        <artifactId>ignite-cache-objects</artifactId>
+        <version><%= @cache_object_version %></version>
+        <scope>system</scope>
+        <systemPath>/usr/lib/ignite/libs/ignite-cache-objects.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.spark</groupId>
+        <artifactId>spark-core_2.10</artifactId>
+        <version>1.5.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.spark</groupId>
+        <artifactId>spark-sql_2.10</artifactId>
+        <version>1.5.1</version>
+      </dependency>
+    </dependencies>
+
+</project>

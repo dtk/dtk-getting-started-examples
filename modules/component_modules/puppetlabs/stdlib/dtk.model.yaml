@@ -1,0 +1,12 @@
+---
+module: stdlib
+dsl_version: 1.0.0
+components:
+  stdlib:
+    actions:
+      create: 
+        puppet_class: stdlib
+  stages:
+    actions:
+      create: 
+        puppet_class: stdlib::stages

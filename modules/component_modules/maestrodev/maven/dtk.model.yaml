@@ -1,0 +1,132 @@
+---
+module: maven
+dsl_version: 1.0.0
+components:
+  artifact:
+    description: Installs a maven artifact
+    attributes:
+      name:
+        description: Full path where to put artifact
+        type: string
+        required: true
+      repo_url:
+        description: "Repository to use for artifact downloading. Defaults to http://repo1.maven.apache.org/maven2"
+        type: string
+      repo_type:
+        description: "Only optionally used when 'repo_url' is given'; it adds  '/${repo_type}' to repo_url"
+        type: string
+      id:
+        description: "The Maven repository id, ie. 'org.apache.maven:maven-core:jar:3.0.5'"
+        type: string
+      groupid:
+        description: "The Maven arifact group id, ie. 'org.apache.maven'"
+        type: string
+        hidden: true
+      artifactid:
+        description: "The Maven artifact id, ie. 'maven-core'"
+        type: string
+        hidden: true
+      version:
+        description: "The Maven artifact version, ie. '3.0.5'"
+        type: string
+        hidden: true
+      packaging:
+        description: "The Maven artifact packaging, ie. 'jar'"
+        type: string
+        hidden: true
+    link_defs:
+      nexus:
+        attribute_mappings:
+        - $base_repository_url  -> repo_url
+        - $repo_type -> repo_type
+    actions:
+      create:
+        puppet_definition: maven::artifact
+
+  settings:
+    attributes:
+      name:
+        type: string
+        required: true
+      home:
+        type: string
+      user:
+        type: string
+      group:
+        type: string
+      servers:
+        type: array
+      mirrors:
+        type: array
+      default_repo_config:
+        type: string
+      repos:
+        type: array
+      properties:
+        type: hash
+      local_repo:
+        type: string
+      proxies:
+        type: array
+    actions:
+      create:
+        puppet_definition: maven::settings
+  environment:
+    attributes:
+      name:
+        type: string
+        required: true
+      user:
+        type: string
+        required: true
+      group:
+        type: string
+      home:
+        type: string
+      maven_opts:
+        type: string
+      maven_path_additions:
+        type: string
+      mavenrc_additions:
+        type: string
+    actions:
+      create:
+        puppet_definition: maven::environment
+  maven:
+    attributes:
+      version:
+        type: string
+      repo:
+        type: hash
+    actions:
+      create:
+        puppet_class: maven::maven
+  install_gem:
+    attributes:
+      name:
+        type: string
+        required: true
+      version:
+        type: string
+    actions:
+      create:
+        puppet_definition: maven::install_gem
+  buildr:
+    attributes:
+      java_home:
+        type: string
+        required: true
+    actions:
+      create:
+        puppet_class: maven::buildr
+  configure:
+    attributes:
+      settings:
+        type: string
+      environments:
+        type: string
+    actions:
+      create:
+        puppet_class: maven::configure
+includes:
+- wget

@@ -1,0 +1,53 @@
+---
+module: gitarchive
+dsl_version: 1.0.0
+components:
+  gitarchive:
+    attributes:
+      name:
+        type: string
+        required: true
+      year:
+        type: string
+        required: true
+        default: 2015
+      month:
+        type: string
+        required: true
+      day:
+        type: string
+        required: true
+      hours:
+        type: string
+      owner:
+        type: string
+        required: true
+        default: ec2-user
+      load_command_line:
+        type: string
+        dynamic: true 
+      hdfs_files_directory:
+        type: string
+        dynamic: true 
+        hidden: true
+      hdfs_superuser:
+        type: string
+        dynamic: true 
+        hidden: true
+
+    actions:
+      create:
+        puppet_definition: gitarchive
+      load:
+        commands:
+        - RUN: |
+           {{load_command_line}}
+      list:
+        commands:
+        - RUN: su {{hdfs_superuser}} -c "hadoop fs -ls {{hdfs_files_directory}}"
+      clear:
+        commands:
+        - RUN: su {{hdfs_superuser}} -c "hadoop fs -rm -r -f {{hdfs_files_directory}} > /dev/null 2>&1"
+
+includes:
+- dataset

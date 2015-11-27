@@ -1,0 +1,28 @@
+class ignite::install::cache_objects::maven_repo() inherits ignite::install::cache_objects
+{
+  $maven_ids = ["${cache_object_group_id}:${cache_object_artifact_id}:${cache_object_version}:jar"]
+
+  ignite::install::cache_objects::maven_repo::install_artifact { $maven_ids:
+    repos => [$local_maven_repo_url]
+  }
+ 
+}
+
+define ignite::install::cache_objects::maven_repo::install_artifact(
+  $repos
+)
+{
+
+  # maven_id has form like 'io.dtk:ignite-cache-objects:1.0.0:jar'
+  $maven_id = $name
+
+  include ignite::params
+  $local_artifact_name = $ignite::params::cache_object_local_jar_name
+  $ignite_lib_dir = $ignite::params::ignite_lib_dir
+
+  ignite::maven_install_from_local_repo { "${ignite_lib_dir}/${local_artifact_name}":
+    maven_id =>  $maven_id,
+    repos    => $repos
+  }
+}
+

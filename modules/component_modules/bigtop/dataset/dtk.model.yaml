@@ -1,0 +1,47 @@
+---
+module: dataset
+dsl_version: 1.0.0
+components:
+  hdfs:
+    attributes:
+      name:
+        description: Name of dataset
+        type: string 
+        required: true
+      target_directory:
+        description: Target hdfs directory where files are loaded
+        type: string 
+        required: true
+      owner:
+        description: Owner of target_directory and files put in hdfs; default is hdfs superuser
+        type: string
+      source:
+        description: |
+          Type-specific description giving details for source of data.
+          Hash with keys 'type', 'file_directory_url' and 'files', which is single file or term with wildcards
+        type: hash
+        required: true
+      load_command_line:
+        type: string
+        dynamic: true 
+      hdfs_superuser:
+        type: hash
+        dynamic: true
+        hidden: true
+    depedencies:
+    - hadoop::common_hdfs
+
+    actions:
+      create:
+        puppet_definition: dataset::hdfs
+      load:
+        commands:
+        - RUN: |
+           {{load_command_line}}
+      list:
+        commands:
+        - RUN: su {{hdfs_superuser}} -c "hadoop fs -ls {{target_directory}}" 
+      clear:
+        commands:
+        - RUN: su {{hdfs_superuser}} -c "hadoop fs -rm -r -f {{target_directory}} > /dev/null 2>&1"
+

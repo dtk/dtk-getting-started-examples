@@ -1,0 +1,12 @@
+---
+component_modules:
+  bigtop_base:
+    namespace: bigtop-new
+  bigtop_multiservice:
+    namespace: bigtop
+  gitarchive:
+    namespace: datasets
+  hadoop:
+    namespace: bigtop-new
+  spark:
+    namespace: bigtop-new

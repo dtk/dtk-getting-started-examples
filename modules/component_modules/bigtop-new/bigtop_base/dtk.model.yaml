@@ -1,0 +1,16 @@
+---
+module: bigtop_base
+dsl_version: 1.0.0
+components:
+  bigtop_base:
+    attributes:
+      with_jdk:
+        type: boolean
+      with_maven:
+        type: boolean
+    actions:
+      create:
+        puppet_class: bigtop_base
+includes:
+- host
+- maven

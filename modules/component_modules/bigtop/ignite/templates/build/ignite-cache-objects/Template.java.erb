@@ -1,0 +1,29 @@
+package <%= @cache_object_group_id %>;
+import java.io.Serializable;
+
+public class <%= @cache_object[:object_class] %> implements Serializable {
+<% @cache_object[:fields].each do |field| -%>
+    private <%= field[:java_type] %> <%= field[:name] %>;
+<% end -%>
+
+    public <%= @cache_object[:object_class] %>(
+<% num_fields = @cache_object[:fields].size -%>
+<% @cache_object[:fields].each_with_index do |field, i| -%>
+      <%= field[:java_type] %> <%= field[:name] %><%= (i == (num_fields-1)) ? '' : ',' -%>
+<% end -%>
+    ) {
+<% @cache_object[:fields].each do |field| -%>
+        this.<%= field[:name] %> = <%= field[:name] %>;
+<% end -%>
+    }
+
+    /** {@inheritDoc} */
+    @Override public String toString() {
+        return "<%= @cache_object[:object_class] %> [id=" + id +
+<% @cache_object[:fields].reject{ |f| f[:name] == 'id' }.each do |field| -%>
+            ", <%= field[:name] %>=" + <%= field[:name] %> +
+<% end -%>
+            "]";
+    }
+}
+

@@ -1,0 +1,8 @@
+---
+component_modules:
+  bigtop_toolchain:
+    namespace: bigtop
+  kerberos:
+    namespace: bigtop
+  stdlib:
+    namespace: puppetlabs

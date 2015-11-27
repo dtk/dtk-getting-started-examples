@@ -1,0 +1,26 @@
+---
+module: bigtop_toolchain
+dsl_version: 1.0.0
+components:
+  groovy:
+    actions:
+      create:
+        puppet_class: bigtop_toolchain::groovy
+  gradle:
+    actions:
+      create:
+        puppet_class: bigtop_toolchain::gradle
+  maven:
+    actions:
+      create:
+        puppet_class: bigtop_toolchain::maven
+  scala:
+    actions:
+      create:
+        puppet_class: bigtop_toolchain::scala
+  sbt:
+    actions:
+      create:
+        puppet_class: bigtop_toolchain::sbt
+
+

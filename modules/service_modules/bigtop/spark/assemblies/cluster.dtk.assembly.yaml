@@ -1,0 +1,116 @@
+---
+name: cluster
+description: spark cluster 
+dsl_version: 1.0.0
+node_bindings:
+  master: amazon_hvm-medium
+  slaves: amazon_hvm-medium
+assembly:
+  components:
+  - bigtop_multiservice
+  - hadoop::cluster:
+      component_links:
+        bigtop_multiservice: bigtop_multiservice
+  - spark::cluster:
+      component_links:
+        bigtop_multiservice: bigtop_multiservice
+  nodes:
+    master:
+      components:
+      - bigtop_multiservice::hiera:
+          component_links:
+            bigtop_multiservice: bigtop_multiservice
+      - bigtop_base
+
+      - hadoop::namenode
+      - hadoop::hdfs_directories
+
+      - spark::master:
+          attributes:
+            eventlog_enabled: true
+          component_links:
+            hadoop::hdfs_directories: master/hadoop::hdfs_directories
+
+    slaves:
+      attributes:
+        cardinality: 2
+        type: group
+      components:
+      - bigtop_multiservice::hiera:
+          component_links:
+            bigtop_multiservice: bigtop_multiservice
+      - bigtop_base
+
+      - hadoop::datanode
+      - spark::common:
+          component_links:
+            spark::master: master/spark::master
+
+      - spark::worker
+      - hadoop::common_hdfs:
+          component_links:
+            hadoop::namenode: master/hadoop::namenode
+workflows:
+  create:
+    subtasks:
+    - name: bigtop_multiservice
+      components:
+      - bigtop_multiservice
+    - name: bigtop hiera
+      components:
+      - bigtop_multiservice::hiera
+    - name: bigtop_base
+      components:
+      - bigtop_base
+
+    - name: namenode
+      components:
+      - hadoop::namenode
+    - name: if needed leave safemode
+      actions:
+      - hadoop::namenode.leave_safemode
+    - name: namenode smoke test
+      actions:
+      - hadoop::namenode.smoke_test
+    - name: datanodes
+      ordered_components:
+      - hadoop::common_hdfs
+      - hadoop::datanode
+
+    - name: hdfs directories for spark
+      components:
+      - hadoop::hdfs_directories
+    - name: spark master
+      components:
+      - spark::master
+    - name: spark workers
+      ordered_components:
+      - spark::common
+      - spark::worker
+
+  load_gitarchive_dataset:
+    subtasks:
+    - name: set '{{name}}' dataset info
+      components:
+      - gitarchive[{{name}}]
+    - name: load gitarchive '{{name}}'
+      actions:
+      - gitarchive[{{name}}].load
+
+  clear_gitarchive_dataset:
+    subtasks:
+    - name: set '{{name}}' dataset info
+      components:
+      - gitarchive[{{name}}]
+    - name: clear gitarchive dataset '{{name}}'
+      actions:
+      - gitarchive[{{name}}].clear
+
+  list_gitarchive_hdfs_files:
+    subtasks:
+    - name: set '{{name}}' dataset info
+      components:
+      - gitarchive[{{name}}]
+    - name: list '{{name}}' hdfs files
+      actions:
+      - gitarchive[{{name}}].list

@@ -1,0 +1,8 @@
+---
+module: kerberos
+dsl_version: 1.0.0
+components:
+  kerberos:
+    actions:
+      create:
+        puppet_class: kerberos

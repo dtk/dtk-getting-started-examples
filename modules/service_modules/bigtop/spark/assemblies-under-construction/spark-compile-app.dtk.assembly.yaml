@@ -1,0 +1,123 @@
+---
+name: spark-compile-app
+description: spark environment for compiling apps
+dsl_version: 1.0.0
+node_bindings:
+  build-servers: amazon-medium
+  master: amazon-medium
+  slaves: amazon-small
+assembly:
+  nodes:
+    master:
+      components:
+      - hiera_bigtop
+      - bigtop_base
+      - hadoop::namenode
+      - hadoop::hdfs_directories
+      - spark::master:
+          component_links:
+            hadoop::hdfs_directories: master/hadoop::hdfs_directories
+          attributes:
+            eventlog_enabled: true
+    slaves:
+      attributes:
+        cardinality: 1
+        type: group
+      components:
+      - hadoop::datanode
+      - spark::common:
+          component_links:
+            spark::master: master/spark::master
+      - bigtop_base
+      - hiera_bigtop
+      - spark::worker
+      - hadoop::common_hdfs:
+          component_links:
+            hadoop::namenode: master/hadoop::namenode
+
+    build-servers:
+      attributes:
+        cardinality: 1
+        type: group
+      components:
+      - hiera_bigtop
+      - spark::client
+      - bigtop_base
+      - hadoop::common_hdfs:
+          component_links:
+            hadoop::namenode: master/hadoop::namenode
+      - spark::common:
+          component_links:
+            spark::master: master/spark::master
+      - bigtop_toolchain::gradle
+      - bigtop_toolchain::groovy
+      - bigtop_toolchain::maven 
+      - bigpetstore::spark:
+          component_links:
+            spark::master: master/spark::master
+
+workflow:
+  assembly_action: create
+  subtask_order: sequential
+  subtasks:
+  - name: hiera_bigtop
+    ordered_components:
+    - hiera_bigtop
+  - name: bigtop_base and build tools
+    ordered_components:
+    - bigtop_base
+    - bigtop_toolchain::gradle
+    - bigtop_toolchain::groovy
+    - bigtop_toolchain::maven 
+
+  - name: namenode
+    node: master
+    ordered_components:
+    - hadoop::namenode
+  - name: datanode
+    node_group: slaves
+    ordered_components:
+    - hadoop::common_hdfs
+    - hadoop::datanode
+
+  - name: hdfs directories for spark
+    node: master
+    ordered_components:
+    - hadoop::hdfs_directories
+
+  - name: spark master
+    node: master
+    ordered_components:
+    - spark::master
+  - name: spark workers
+    node_group: slaves
+    ordered_components:
+    - spark::common
+    - spark::worker
+
+  - name: build server connections
+    node_group: build-servers
+    ordered_components:
+    - hadoop::common_hdfs
+    - spark::common
+    - spark::client
+
+  - name: set up build env for bigpetstore::spark 
+    node_group: build-servers
+    ordered_components:
+    - bigpetstore::spark
+
+  - name: build bigpetstore::spark app
+    node_group: build-servers
+    actions:
+    - bigpetstore::spark.build
+
+  - name: build bigpetstore::spark app
+    node_group: build-servers
+    actions:
+    - bigpetstore::spark.build
+
+  - name: generate_data bigpetstore::spark app
+    node_group: build-servers
+    actions:
+    - bigpetstore::spark.generate_data

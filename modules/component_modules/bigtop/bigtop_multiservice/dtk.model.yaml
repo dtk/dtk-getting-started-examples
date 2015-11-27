@@ -1,0 +1,43 @@
+---
+module: bigtop_multiservice
+dsl_version: 1.0.0
+components:
+  bigtop_multiservice:
+    attributes:
+      java_version:
+        type: string
+        required: true
+        default: 1.7
+      aggregate_input:
+        type: hash
+        # hidden: true
+      aggregate_output:
+        type: hash
+        dynamic: true
+        # hidden: true
+    actions: 
+      create:
+        function:
+          type: ruby_function
+          outputs:
+            aggregate_output: |
+              lambda do |java_version, aggregate_input|
+                # TODO: this is also where we can do cross version integrity checking
+                # and auto generating constrained attributes
+                { 'java_version' => java_version}.merge(aggregate_input)
+              end
+
+  hiera:
+    attributes:
+      globals:
+        type: hash
+        # hidden: true
+    dependencies:
+    - bigtop_multiservice
+    link_defs:
+      bigtop_multiservice:
+        attribute_mappings:
+        - $aggregate_output -> globals
+    actions:
+      create:
+        puppet_class: bigtop_multiservice::hiera

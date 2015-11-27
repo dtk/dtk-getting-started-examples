@@ -1,0 +1,77 @@
+---
+module: ignite
+dsl_version: 1.0.0
+components:
+  # TODO: remobe after remove all refs to it
+  globals:
+    attributes:
+      version:
+        type: string
+
+  cluster:
+    attributes:
+      version:
+        type: string
+        required: true
+        default: 1.5.1
+      local_maven_repo_url:
+        type: string
+
+      host_addresses:
+        type: array
+        hidden: true
+
+      globals:
+        type: hash
+        dynamic: true
+
+    dependencies:
+    - bigtop_multiservice
+    link_defs:
+      bigtop_multiservice:
+        attribute_mappings:
+        - aggregate_input[ignite_version] <- $version
+      nexus:
+        attribute_mappings:
+        - $release_repo_url -> local_maven_repo_url
+
+    actions: 
+      create:
+        function:
+          type: ruby_function
+          outputs:
+            globals: | 
+              lambda do |host_addresses, local_maven_repo_url, cache_objects|
+                ret = { 'node_addresses' => host_addresses }
+                ret.merge!('local_maven_repo_url' => local_maven_repo_url) if local_maven_repo_url
+                ret
+              end 
+
+  ignite:
+    attributes:
+      globals:
+        type: hash
+        hidden: true
+      has_spark_driver:
+        type: boolean  
+    link_defs:
+      ignite::cluster:
+        attribute_mappings:
+        - host_addresses <- $node.host_address
+        - $globals -> globals
+    actions:
+      create: 
+        puppet_class: ignite::install_and_configure  
+      start:
+        command: RUN service ignite start
+      stop:
+        command: RUN service ignite stop
+      status:
+        command: RUN service ignite status
+      restart:
+        command: RUN service ignite restart
+
+
+includes:
+- dtk_util
+- maven

@@ -1,0 +1,137 @@
+---
+module: hadoop
+dsl_version: 1.0.0
+module_type: puppet_module
+components:
+  cluster:
+    attributes:  
+      version:
+        type: string
+        required: true
+        default: 2.7
+    dependencies:
+    - bigtop_multiservice
+    link_defs:
+      bigtop_multiservice:
+        attribute_mappings:
+        - aggregate_input[hadoop_version] <- $version
+
+  ### hdfs components
+  namenode:
+    attributes:
+      port:
+        type: port
+        dynamic: true
+      http_port:
+        type: port
+        dynamic: true
+      hdfs_daemon_user:
+        type: string
+        dynamic: true
+    actions: 
+      create:
+        puppet_class: hadoop::namenode
+      smoke_test:
+        commands:
+        - RUN echo "namenode port={{port}}"
+        - RUN netstat -nltp | grep {{port}}
+        - RUN su {{hdfs_daemon_user}} -c "hdfs dfsadmin -safemode get" | grep OFF
+      leave_safemode:
+        command: 
+          RUN su {{hdfs_daemon_user}} -c 'hdfs dfsadmin -safemode leave'
+    dependencies:
+    - bigtop_base
+
+  common_hdfs:
+    attributes:
+      hadoop_namenode_host:
+        type: array
+        required: true
+    actions:
+      create:
+        puppet_class: hadoop::common_hdfs
+    dependencies:
+    - bigtop_base
+    - hadoop::namenode
+    link_defs:
+      hadoop::namenode:
+        attribute_mappings:
+        - $node.host_address -> hadoop_namenode_host
+
+  datanode:
+    actions: 
+      create:
+        puppet_class: hadoop::datanode
+      restart:
+        command: 
+          RUN service hadoop-hdfs-datanode restart
+    dependencies:
+    - hadoop::common_hdfs
+
+  hdfs_directories:
+    attributes:
+      daemon_dirs:
+        type: array
+    actions:
+      create:
+        puppet_class: hadoop::hdfs_directories
+    dependencies:
+    - hadoop::namenode
+    includes:
+    - bigtop_toolchain
+
+  ### yarn components
+  resourcemanager:
+    actions:
+      create:
+        puppet_class: hadoop::resourcemanager
+    dependencies:
+    - hadoop::common_hdfs
+
+  common_yarn:
+    actions:
+      create:
+        puppet_class: hadoop::common_yarn
+    attributes:
+      hadoop_rm_host:
+        type: string
+    dependencies:
+    - hadoop::common_hdfs
+    - hadoop::resourcemanager
+    link_defs:
+      hadoop::resourcemanager:
+        attribute_mappings:
+        - $node.host_address -> hadoop_rm_host
+
+  nodemanager:
+    actions:
+      create:
+        puppet_class: hadoop::nodemanager
+    dependencies:
+    - hadoop::common_yarn
+
+  test_client:
+    attributes:
+      test_user:
+        default: hdfs
+        required: true
+      test_file_content:
+        dynamic: true
+      test_file_path:
+        dynamic: true
+    dependencies:
+    - hadoop::common_hdfs
+    actions:
+      create:
+        puppet_class: hadoop::test_client
+      test_hdfs:
+        commands:
+        - RUN echo "success if hadoop file '/test-{{test_user}}/test.txt' has content '{{test_file_content}}'"
+        - RUN su - {{test_user}} -c "hadoop fs -rm -r /test-{{test_user}}; ls > /dev/null"
+        - RUN su - {{test_user}} -c "hadoop fs -mkdir /test-{{test_user}}"
+        - RUN su - {{test_user}} -c "hadoop fs -put {{test_file_path}} /test-{{test_user}}/test.txt"
+        - RUN su - {{test_user}} -c "hdfs dfs -cat /test-{{test_user}}/test.txt | grep {{test_file_content}}"
+
+includes:
+- stdlib
+- kerberos

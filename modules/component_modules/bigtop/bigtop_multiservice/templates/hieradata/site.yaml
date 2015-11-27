@@ -1,0 +1,49 @@
+---
+#general
+bigtop_global::config_state_dir: /var/run/dtk/state
+
+#multi service
+bigtop_global::services_base_dir: /usr/lib
+
+#versions
+bigtop_global::java_version: <%= @java_version %>
+bigtop_global::java_semantic_version: <%= java_semantic_version %>
+bigtop_global::hadoop_version: <%= @hadoop_version %>
+bigtop_global::hadoop_semantic_version: <%= @hadoop_semantic_version %>
+bigtop_global::spark_version: <%= @spark_version %>
+bigtop_global::ignite_version: <%= @ignite_version %>
+
+
+#daemon users
+bigtop_global::hdfs_daemon_user: <%= @hdfs_daemon_user %>
+bigtop_global::spark_daemon_user: <%= @spark_daemon_user %>
+bigtop_global::ignite_daemon_user: <%= @ignite_daemon_user %>
+
+# spark specfic
+bigtop_global::spark_install_mode: "tar"
+
+######## TODO: deprecate below and replace by the above form above
+
+hadoop::hadoop_storage_base_dirs:
+  - /data
+hadoop::hadoop_storage_dirs:
+  - /data/1
+  - /data/2
+  - /data/3
+  - /data/4
+
+bigtop::jdk_package_name: "java-<%= @java_semantic_version %>-openjdk"
+bigtop::jdk_devel_package_name: "java-<%= @java_semantic_version %>-openjdk-devel"
+
+
+# TODO: may get rid of having to set these also on install
+
+ignite::install::version: <%= @ignite_version %>
+ignite::install::mode: "tar"
+ignite::install::tar::options:
+  binary_url: "http://www.trieuvan.com/apache/ignite/<%= @ignite_version %>/apache-ignite-fabric-<%= @ignite_version %>-bin.zip"
+
+spark::params::spark_daemon_user: <%= @spark_daemon_user %>
+ignite::params::ignite_daemon_user: <%= @ignite_daemon_user %>
+
+

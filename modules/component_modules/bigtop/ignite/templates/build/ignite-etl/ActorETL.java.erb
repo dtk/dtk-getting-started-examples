@@ -1,0 +1,22 @@
+package io.dtk.etl;
+import io.dtk.Actor;
+import org.apache.spark.api.java.*;
+import org.apache.spark.api.java.function.Function;
+import org.apache.spark.sql.*;
+import java.util.List;
+import scala.Tuple2;
+public class ActorETL {
+    public static JavaRDD<Tuple2<String,Actor>> transform(DataFrame df) {
+        DataFrame selectDf = df.select("actor.id","actor.avatar_url","actor.gravatar_id","actor.url","actor.login","actor.id");
+         return selectDf.javaRDD().map(new Function<Row, Tuple2<String,Actor>>() {
+                public Tuple2<String,Actor> call(Row row) {
+                    return new Tuple2(Long.toString(row.getLong(0)),
+                                      new Actor(row.getString(1),
+                                                row.getString(2),
+                                                row.getString(3),
+                                                row.getString(4),
+                                                row.getLong(5)));
+                }
+             });
+    }
+}

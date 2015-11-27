@@ -1,0 +1,15 @@
+package <%= @group_id %>;
+import org.apache.spark.api.java.*;
+import org.apache.spark.SparkConf;
+import org.apache.spark.sql.*;
+
+public class CreateSharedRdd {
+    public static void main(String[] args) {
+        String path = "hdfs://10.0.0.184:8020/user/local/ignite/data/*.json.gz";
+        SparkConf conf = new SparkConf().setAppName("CreateSharedRdd");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        SQLContext sqlContext = new org.apache.spark.sql.SQLContext(sc);
+        DataFrame df = sqlContext.read().json(path);
+        df.printSchema();
+    }
+}

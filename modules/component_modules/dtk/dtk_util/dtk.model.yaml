@@ -1,0 +1,33 @@
+---
+module: dtk_util
+dsl_version: 1.0.0
+components:
+  dtk_util:
+    actions:
+      create:
+        puppet_class: dtk_util
+
+  apt_get_update:
+    actions:
+      create:
+        puppet_class: dtk_util::apt_get_update
+
+  tar_install:
+    attributes:
+      name:
+        description: destination directory
+        type: string
+        required: true
+      source:
+        description: tar source
+        type: string
+        required: true
+      source_extension:
+        type: string
+        default: tgz
+    includes:
+    - wget
+    actions:
+      create:
+        puppet_class: dtk_util::tar_install
+

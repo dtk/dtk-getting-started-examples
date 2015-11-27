@@ -1,0 +1,153 @@
+---
+module: spark
+dsl_version: 1.0.0
+components:
+  cluster:
+    attributes:  
+      version:
+        type: string
+        required: true
+        default: 1.5.1
+    dependencies:
+    - bigtop_multiservice
+    link_defs:
+      bigtop_multiservice:
+        attribute_mappings:
+        - aggregate_input[spark_version] <- $version
+
+  master:
+    attributes:
+      master_host:
+        type: string
+        dynamic: true
+      spark_version:
+        type: string
+        dynamic: true
+      master_port:
+        type: port
+        default: 7077
+        required: true
+      master_ui_port:
+        type: port
+        default: 8080
+        required: true
+      master_ec2_local_ipv4:
+        type: string
+        dynamic: true
+        hidden: true
+      eventlog_enabled:
+        type: boolean
+        default: true
+        required: true
+      cassandra_host:
+        type: string
+      eventlog_dir:
+        type: string
+        default: /user/local/spark
+      history_server_enabled:
+        type: boolean
+        default: true
+      hdfs_namenode_host:
+        type: string
+      hdfs_working_dirs:
+        type: json
+        default:
+        - path: /user/local/spark/
+          mode: '1777'
+          owner: spark
+        - path: /var/log/spark/apps
+          mode: '1777'
+          owner: spark
+          group: spark
+    dependencies:
+    - hadoop::hdfs_directories 
+    link_defs:
+      hadoop::hdfs_directories:
+        attribute_mappings:
+        - daemon_dirs <- $hdfs_working_dirs
+        - $node.host_address -> hdfs_namenode_host
+      cassandra::cluster:
+        attribute_mappings:
+        - $contact_point -> cassandra_host
+
+    actions:
+      create:
+        puppet_class: spark::master
+      test_port_up:
+        commands:
+        - RUN echo "spark master port={{master_port}}"
+        - RUN netstat -nltp | grep {{master_port}}
+
+  worker:
+    dependencies:
+    - spark::common
+    actions:
+      create:
+        puppet_class: spark::worker
+  client:
+    attributes:
+      spark_home:
+        dynamic: true
+      spark_examples_jar:
+        dynamic: true
+    dependencies:
+    - spark::common
+    actions:
+      create:
+        puppet_class: spark::client
+      smoke_test:
+        commands:
+        - RUN su spark -c "cd {{spark_home}} && ./bin/spark-submit --class org.apache.spark.examples.SparkPi {{spark_home}}/lib/{{spark_examples_jar}}"
+
+  common:
+    attributes:
+      worker_port:
+        type: port
+        default: 8081
+        constant: true
+      master_host:
+        type: string
+        required: true
+      master_port:
+        type: port
+        required: true
+      master_ec2_local_ipv4:
+        type: string
+        hidden: true
+      eventlog_enabled:
+        type: boolean
+        required: true
+        hidden: true
+      eventlog_dir:
+        type: string
+        required: true
+        hidden: true
+      cassandra_host:
+        type: string
+    dependencies:
+    - bigtop_base
+    - spark::master
+    link_defs:
+      spark::master:
+        attribute_mappings:
+        - $master_host           -> master_host
+        - $master_port           -> master_port
+        - $master_ec2_local_ipv4 -> master_ec2_local_ipv4
+        - $eventlog_enabled      -> eventlog_enabled
+        - $eventlog_dir          -> eventlog_dir      
+      cassandra::cluster:
+        attribute_mappings:
+        - $contact_point -> cassandra_host
+
+    actions:
+      create:
+        puppet_class: spark::common
+      test_port_up:
+        commands:
+        - RUN echo "spark worker port={{worker_port}}"
+        - RUN netstat -nltp | grep {{worker_port}}
+
+includes:
+- dtk_util
+- wget
+

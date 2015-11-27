@@ -1,0 +1,6 @@
+---
+component_modules:
+  dtk_util:
+    namespace: dtk
+  wget:
+    namespace: maestrodev
