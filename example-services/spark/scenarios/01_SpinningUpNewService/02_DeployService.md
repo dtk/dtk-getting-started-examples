@@ -100,10 +100,8 @@ A sample result is:
 |     11.1 configure_nodegroup     |           | slaves        |          |                   |                   |
 |       11.1.1 configure_node      |           | slaves:1      |          |                   |                   |
 |       11.1.2 configure_node      |           | slaves:2      |          |                   |                   |
-|   12 component gitarchive[mar01] |           |               |          |                   |                   |
-|     12.1 configure_node          |           | master        |          |                   |                   |
 +----------------------------------+-----------+---------------+----------+-------------------+-------------------+
-37 rows in set
+35 rows in set
 ```
 This shows exceution of task in the midst of execution that is deploying the Spark and HDFS. When an assembly is deployed for the first time in an EC2 environment the first stage creates all the needed nodes and the subsequent stages perform configuration or test actions. The exact steps performed are captured by workflows described in the Service module DSL (see ...)
 
