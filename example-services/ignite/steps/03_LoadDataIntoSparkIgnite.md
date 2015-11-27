@@ -306,9 +306,48 @@ scala>
 ```
 
 ```
+scala> import org.apache.ignite._
+import org.apache.ignite._
+
+scala> import org.apache.ignite.configuration._
+import org.apache.ignite.configuration._
+
+scala> import org.apache.ignite.cache.query._
+import org.apache.ignite.cache.query._
+
+scala> import org.apache.ignite.spark._
+import org.apache.ignite.spark._
+
+scala> import org.apache.ignite.lang.IgniteBiPredicate
+import org.apache.ignite.lang.IgniteBiPredicate
+
+scala> import io.dtk._
+import io.dtk._
+
+scala> //Actor(avatar_url: String, gravatar_id: String, id: Long, login: String, url: String)
+
+scala>
+     | Ignition.setClientMode(true)
+
+scala> val ignite = Ignition.start("/usr/lib/ignite/config/config.xml")
+15/11/27 17:49:49 WARN NoopCheckpointSpi: Checkpoints are disabled (to enable configure any GridCheckpointSpi implementation)
+15/11/27 17:49:49 WARN GridCollisionManager: Collision resolution is disabled (all jobs will be activated upon arrival).
+15/11/27 17:49:49 WARN NoopSwapSpaceSpi: Swap space is disabled. To enable use FileSwapSpaceSpi.
+ignite: org.apache.ignite.Ignite = IgniteKernal [cfg=IgniteConfiguration [gridName=null, pubPoolSize=16, sysPoolSize=16, mgmtPoolSize=4, igfsPoolSize=2, utilityCachePoolSize=16, utilityCacheKeepAliveTime=10000, marshCachePoolSize=16, marshCacheKeepAliveTime=10000, p2pPoolSize=2, ggHome=null, ggWork=null, mbeanSrv=com.sun.jmx.mbeanserver.JmxMBeanServer@2ad21854, nodeId=51deeaf8-3453-4d16-909f-3b845dcb2e35, marsh=org.apache.ignite.marshaller.optimized.OptimizedMarshaller@36a76cf9, marshLocJobs=false, daemon=false, p2pEnabled=false, netTimeout=5000, sndRetryDelay=1000, sndRetryCnt=3, clockSyncSamples=8, clockSyncFreq=120000, metricsHistSize=10000, metricsUpdateFreq=2000, metricsExpTime=9223372036854775807, discoSpi=TcpDiscoverySpi [addrRslvr=null, sockTimeout=5000, ackTimeout=5000, reconCn...
+scala> val cacheName = "actor"
+cacheName: String = actor
+
+scala> val cfg = new CacheConfiguration[String,Actor]().setName(cacheName).setIndexedTypes(classOf[Integer],classOf[Actor]).setLoadPreviousValue(true)
+cfg: org.apache.ignite.configuration.CacheConfiguration[String,io.dtk.Actor] = CacheConfiguration [name=actor, rebalancePoolSize=2, rebalanceTimeout=10000, evictPlc=null, evictSync=false, evictKeyBufSize=1024, evictSyncConcurrencyLvl=4, evictSyncTimeout=10000, evictFilter=null, evictMaxOverflowRatio=10.0, eagerTtl=true, dfltLockTimeout=0, startSize=1500000, nearCfg=null, writeSync=null, storeFactory=null, loadPrevVal=true, aff=null, cacheMode=PARTITIONED, atomicityMode=null, atomicWriteOrderMode=null, backups=0, invalidate=false, tmLookupClsName=null, rebalanceMode=ASYNC, rebalanceOrder=0, rebalanceBatchSize=524288, offHeapMaxMem=-1, swapEnabled=false, maxConcurrentAsyncOps=500, writeBehindEnabled=false, writeBehindFlushSize=10240, writeBehindFlushFreq=5000, writeBehindFlushThreadCnt=1,...
+scala> val cache =  ignite.getOrCreateCache[String,Actor](cfg)
+cache: org.apache.ignite.IgniteCache[String,io.dtk.Actor] = IgniteCacheProxy [delegate=GridDhtAtomicCache [updateReplyClos=org.apache.ignite.internal.processors.cache.distributed.dht.atomic.GridDhtAtomicCache$2@5bfeef84, near=null, super=GridDhtCacheAdapter [multiTxHolder=java.lang.ThreadLocal@1623e5d4, super=GridDistributedCacheAdapter [super=GridCacheAdapter [valCheck=true, aff=org.apache.ignite.internal.processors.cache.affinity.GridCacheAffinityImpl@86a3b6d, igfsDataCache=false, mongoDataCache=false, mongoMetaCache=false, igfsDataCacheSize=null, igfsDataSpaceMax=0, asyncOpsSem=java.util.concurrent.Semaphore@7663756b[Permits = 500], name=actor, size=0]]]], opCtx=null]
+
+scala>
+     | cache.query(new SqlFieldsQuery("select login, count(*) from Actor group by login limit 5")).getAll
+res3: java.util.List[java.util.List[_]] = [[webwurst, 1], [McKnas, 1], [r0t0r-r0t0r, 1], [mmagnuski, 1], [seebs, 1]]
+
+scala>
 
 ```
 
-
-```
 
