@@ -5,13 +5,12 @@ user@host:~$ dtk-shell
 dtk:/>
 ```
 
-**Cut-and-paste**
 
-Navigate to service module context and then install the service module 'bigtop:spark'. We assume this module is installed after spark has been installed (although not necssary). In this case a prompt will be appear
+To install an ignite cluster, the user should navigate to the service module context and then use the install command, selecting the service module 'bigtop:ignite'. In text below we show the DTK response if the ignite service module is being installed in a context where the spark service module has already been installed. Installing Spark is not necessary;  it just impacts the prompts from the DTK server. In our example scenario the user will see the following prompt:
 ```
 Do you want to update dependent component module 'maestrodev:wget' from the catalog? (yes/no/all/none):
 ```
-This prompt will be produced if service module being installed has dependent component modules that are common to ones shared already. This prompt will appear for each dependent component module that is already installed unless 'none' or 'all' is selecetd which is response for all dependent modules (see .. for discussion on updating shared modules)
+This prompt will be produced if service module being installed has dependent component modules that are common to ones loaded already. This prompt will appear for each dependent component module that is already installed unless 'none' or 'all' is selecetd which is a user response for all dependent modules (see .. for discussion on updating shared modules)
 So to install ignite, user can cut and paste
 ```
 cd /service-module
