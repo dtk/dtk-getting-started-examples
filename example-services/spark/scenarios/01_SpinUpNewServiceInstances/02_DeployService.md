@@ -18,7 +18,7 @@ cd assembly/cluster
 deploy spark-cluster1
 
 ```
-Navigate to the service instance context and list the set of service instances'services, which in this case wil show a single siervice instance that is in 'running' state
+Navigate to the service instance context and list the set of service instances'services, which in this case wil show a single service instance that is in 'running' state
 ```
 cd /service
 ls
@@ -53,28 +53,14 @@ dtk:/service>ls
 
 ```
 ## Using task status to follow deployment of service
-When a service instance is launched, a task is used to keep track of its execution. The user interaction model is asynchronous meaning the user can be performing othera actions in the DTK shell while the task is executing. To check the progress of execution the user can use the 'task-status' command in a service instance context. In this example there is only one service instance 'spark-cluster1', but the DTK user could have simultaneously deployed a set of service instances and then navigate between them to see the status of each
+When a service instance is launched, a task is used to keep track of its execution. The user interaction model is asynchronous meaning the user can be performing other actions in the DTK shell while the task is executing. To check the progress of am excuting task the user can use the 'task-status' command in a service instance context. In this example there is only one service instance 'spark-cluster1', but the DTK user could have simultaneously deployed a set of service instances and then navigate between them to see the status of each
 
-The task status command provides three different user interaction modes that are selected with different command lines options. These are
-* See a snapshot of the task progress
-```
-task-status
-```
-* Put the DTK shell in Linux top-like mode to advance the progress; this mode is left after the task completes in either success, failure, or because it was teminated by the user or the user in the wants switch out of top mode using ^D
-```
-task-status --wait
-```
-* Have the client block and stream the results as they are produced stage by stage
-```
-task-status -m stream
-```
-
-So as an example, the user can navigate to the service instance 'spark-cluster1' and then see a snaphsot of progress using the commands:
+The task status command provides three different user interaction modes that are selected with different command lines options. To see a snapshot of the task progress, the following commands can be issued
 ```
 cd /service/spark-cluster1
 task-status
 ```
-The result can look like
+A sample result is:
 ```
 +----------------------------------+-----------+---------------+----------+-------------------+-------------------+
 | TASK TYPE                        | STATUS    | NODE          | DURATION | STARTED AT        | ENDED AT          |
@@ -119,9 +105,14 @@ The result can look like
 +----------------------------------+-----------+---------------+----------+-------------------+-------------------+
 37 rows in set
 ```
-This shows the deployment of the cluster, which is providing both Spark and HDFS services in the midst of execution. When an assembly is deployed for the first time in an EC2 environment the first stage creates all the needed nodes and the subsequent stages perform configuration or test actions. The exact steps performed are captured by workflows described in the Service module DSL (see ...)
+This shows exceution of task in the midst of execution that is deploying the Spark and HDFS. When an assembly is deployed for the first time in an EC2 environment the first stage creates all the needed nodes and the subsequent stages perform configuration or test actions. The exact steps performed are captured by workflows described in the Service module DSL (see ...)
 
-An example of using the stream format is 
+Anoher mode for task status display is where the client blocks and streams the results as they are produced stage by stage:
+```
+cd /service/spark-cluster1
+task-status m stream
+```
+A sample results is:
 ```
 dtk:/service/spark-cluster1>task-status -m stream
 ========================= 2015-11-26 17:16:55 +0000 start 'assembly_converge' =========================
@@ -215,23 +206,19 @@ STDOUT:
   Safe mode is OFF
 
 ------------------------------------------------------------
-
-============================================================
-STAGE 8: datanodes
-TIME START: 2015-11-26 17:19:33 +0000
-COMPONENTS:
-  node-group:slaves/hadoop::common_hdfs
-  node-group:slaves/hadoop::datanode
-STATUS: succeeded
-DURATION: 33.0s
-------------------------------------------------------------
-...
 ```
 If 'task-status -m stream' is invoked after steps have actual been executed it will stil show the earlier steps that had executed
 
+The user can also display task status in a mode  similar to that of the Linux top command". This is accomplished with the commands:
+```
+cd /service/spark-cluster1
+task-status --wait
+```
+This mode is left after the task completes (in either success, failure, or because it was teminated by the user), or the user exits the top-mode by issuing  ^C
+
 
 ## Checking Task Completion
-Task completion can be checked in a number of different ways. Using the 'task-status' command the user can determine whether the task is complete. Below is an example of a task that completed in seuccess
+Task completion can be checked in a number of different ways. Using the 'task-status' command the user can determine whether the task is complete. Below is an example of a task that completed in success
 ```
 dtk:/service/spark-cluster1>task-status
 +----------------------------------+-----------+---------------+----------+-------------------+-------------------+
@@ -251,7 +238,7 @@ dtk:/service/spark-cluster1>task-status
 ...
 ```
 The top level row 'assembly' converge' indicates the summary status of the task as a whole.
-As an alternative, to see the status of all the service instances the user can do a list command at the service level context by issing the following commands:
+As an alternative, to see the status of all the service instances the user can do a list command at the service level context by issuing the following commands:
 ```
 cd /service
 ls
@@ -277,5 +264,5 @@ As an example of a scenario where along with 'spark-cluster1' the user  also sta
 | 2147494146 | spark-cluster2 | pending |           | bigtop:spark/assembly/cluster | vpc-us-east-1 | 3       | 18:03:51 26/11/15 |
 +------------+----------------+---------+-----------+-------------------------------+---------------+---------+-------------------+
 ```
-Since no tasks have been run yet for 'spark-cluster2' teh cloun 'LAST RUN' has no value
+Since no tasks have been run yet for 'spark-cluster2' the column 'LAST RUN' has no value
 
