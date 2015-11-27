@@ -20,6 +20,7 @@ dtk:/service>ls
 +------------+----------------+---------+-----------+-------------------------------+---------------+---------+-------------------+
 1 row in set
 ```
+```
 dtk:/service/spark-cluster1>converge -s
 Workspace service is stopped, do you want to start it? (yes|no): yes
 ```
@@ -212,4 +213,15 @@ dtk:/service/spark-cluster1>task-status
 +----------------------------------+-----------+---------------+----------+-------------------+-------------------+
 37 rows in set
 ```
+```
+dtk:/service/spark-cluster1>list-nodes
++------------+----------+-------------+-----------+--------------+-----------+-------------------------------------------+
+| ID         | NAME     | INSTANCE ID | SIZE      | OS           | OP STATUS | DNS NAME                                  |
++------------+----------+-------------+-----------+--------------+-----------+-------------------------------------------+
+| 2147495247 | master   | i-e3255353  | t2.medium | amazon-linux | running   | ec2-52-23-217-180.compute-1.amazonaws.com |
+| 2147495396 | slaves:1 | i-e2255352  | t2.medium | amazon-linux | running   | ec2-54-165-138-89.compute-1.amazonaws.com |
+| 2147495397 | slaves:2 | i-e4255354  | t2.medium | amazon-linux | running   | ec2-54-173-134-64.compute-1.amazonaws.com |
++------------+----------+-------------+-----------+--------------+-----------+-------------------------------------------+
+3 rows in set
+
 ```
