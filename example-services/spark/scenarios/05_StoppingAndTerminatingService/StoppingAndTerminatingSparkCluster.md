@@ -225,4 +225,17 @@ dtk:/service/spark-cluster1>list-nodes
 3 rows in set
 
 ```
+```
+dtk:/service>ls
++------------+----------------+---------+-----------+-------------------------------+---------------+---------+-------------------+
+| ID         | ASSEMBLY NAME  | STATUS  | LAST RUN  | ASSEMBLY TEMPLATE             | TARGET        | # NODES | CREATED AT        |
++------------+----------------+---------+-----------+-------------------------------+---------------+---------+-------------------+
+| 2147495246 | spark-cluster1 | running | succeeded | bigtop:spark/assembly/cluster | vpc-us-east-1 | 3       | 16:40:59 27/11/15 |
++------------+----------------+---------+-----------+-------------------------------+---------------+---------+-------------------+
+1 row in set
 
+dtk:/service>delete-and-destroy -y spark-cluster1
+Status: OK
+dtk:/service>ls
+Message: List is empty.
+```
