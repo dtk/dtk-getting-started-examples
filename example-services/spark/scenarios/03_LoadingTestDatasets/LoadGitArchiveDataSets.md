@@ -78,6 +78,7 @@ dtk:/service/spark-cluster1>list-workflows
 | 2147495389 | create                     |
 +------------+----------------------------+
 4 rows in set
+```
 
 ```
 dtk:/service/spark-cluster1>exec load_gitarchive_dataset name=mar01 -s
@@ -111,6 +112,7 @@ STDOUT:
 
 ========================= end: 'load_gitarchive_dataset' (total duration: 58.7s) =========================
 Status: OK
+```
 ```
 dtk:/service/spark-cluster1>exec list_gitarchive_hdfs_files name=mar01 -s
 ========================= start 'list_gitarchive_hdfs_files' =========================
@@ -167,6 +169,7 @@ STDOUT:
 ========================= end: 'list_gitarchive_hdfs_files' (total duration: 4.8s) =========================
 Status: OK
 ```
+```
 dtk:/service/spark-cluster1>exec load_gitarchive_dataset name=mar01 -s
 ========================= start 'load_gitarchive_dataset' =========================
 
@@ -198,6 +201,7 @@ STDOUT:
 
 ========================= end: 'load_gitarchive_dataset' (total duration: 4.8s) =========================
 Status: OK
+```
 ```
 dtk:/service/spark-cluster1>master ssh
 You are entering SSH terminal (ec2-user@ec2-54-174-107-248.compute-1.amazonaws.com) ...
