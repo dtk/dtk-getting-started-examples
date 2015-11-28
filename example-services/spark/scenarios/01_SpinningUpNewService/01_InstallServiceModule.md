@@ -1,29 +1,21 @@
 ## Install the Spark service module
 In order to deploy a services using the DevOps Toolkit (DTK), service modules must first be installed from the DTK Catalog Manager. The steps below shows installation of a service module that can deploy spark clusters.
 
-In the text below and throughout the examples we provide both the commands in a form so they can be cut and paste along with the full interactive session with user commands and the DTK responses. We assume that user first entered the DTK shell from the Linux command line
+We assume that user first entered the DTK shell from the Linux command line
 ```
 user@host:~$ dtk-shell
 dtk:/>
 ```
-
+In these Spark scenarios we will use a service module named 'bigtop:spark'. To install this service module into the user's local environment the following commands can be enterred after enterring teh DTK shell:
 **Cut-and-paste**
 
-Navigate to service module context and then install the service module 'bigtop:spark'
+
 ```
 cd /service-module
 install bigtop:spark
 
 ```
-List the service modules to show the installed service module and then navigate to the component module context to show the component modules that get installed as dependencies when installing the service module.
-```
-ls
-cd /component-module
-ls
-
-```
-
-**Commands and responses**
+The first command navigates to the "service module context" and teh second command does the actual installation. The dialog with user typing these commands and the DTK responses will look like:
 ```
 dtk:/>cd /service-module
 dtk:/service-module>install bigtop:spark
@@ -42,8 +34,26 @@ Installing component module 'datasets:gitarchive' ... Done.
 Installing component module 'bigtop:bigtop_multiservice' ... Done.
 Installing component module 'bigtop-new:bigtop_base' ... Done.
 Resuming DTK Network import for service_module 'bigtop:spark' ... Done
-module_directory: /home/dtk614-rich/dtk/service_modules/bigtop/spark
+```
+This shows both the installation of the bigtop:spark service module as well as the installtion of all the "compone
+module_directory: /home/dtk614-rich/dtk/service_modules/bigtop/sparknt modules" that it refers to. In these exercises we will not dig into the details of component modules, which can be thought of as the reusable building blocks for forming services.
 
+The user can list the currently installed service modules with the commands:
+```
+cd /service-module
+ls
+```
+which in this scenario would show output:
+```
++------------+--------------+---------------------+------------+
+| ID         | NAME         | REMOTE(S)           | DSL PARSED |
++------------+--------------+---------------------+------------+
+| 2147491114 | bigtop:spark | dtkn://bigtop/spark | true       |
++------------+--------------+---------------------+------------+
+1 row in set
+```
+Note: as explained in the perrequsite section we wil be giving cut and patse commands that make no assumption about what context the user is in the dtk shell. See these cut and paste fragments will typically start with 'cd /FULLPATH'. If the user wants to take advatage of the DTK shell contecxt mechanism, if teh user ws already in the 'serce-module; context, they simply can do 'ls' as shown below
+```
 dtk:/service-module>ls
 +------------+--------------+---------------------+------------+
 | ID         | NAME         | REMOTE(S)           | DSL PARSED |
@@ -51,6 +61,21 @@ dtk:/service-module>ls
 | 2147491114 | bigtop:spark | dtkn://bigtop/spark | true       |
 +------------+--------------+---------------------+------------+
 1 row in set
+```
+```
+
+
+List the service modules to show the installed service module and then navigate to the component module context to show the component modules that get installed as dependencies when installing the service module.
+```
+ls
+cd /component-module
+ls
+
+```
+
+**Commands and responses**
+
+
 
 dtk:/service-module>cd /component-module
 dtk:/component-module>ls
