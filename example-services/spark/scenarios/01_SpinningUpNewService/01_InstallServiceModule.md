@@ -61,15 +61,15 @@ dtk:/service-module>ls
 +------------+--------------+---------------------+------------+
 1 row in set
 ```
-```
+
 If the user wants to see teh currently installed component modules, teh following commands can be used:
 ```
 cd /component-module
 ls
 
 ```
-
 The output would look like:
+```
 +------------+----------------------------+-------------------------------------------------------------------------+------------+
 | ID         | NAME                       | REMOTE(S)                                                               | DSL PARSED |
 +------------+----------------------------+-------------------------------------------------------------------------+------------+
