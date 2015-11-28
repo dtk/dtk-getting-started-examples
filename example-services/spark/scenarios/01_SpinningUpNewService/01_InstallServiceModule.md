@@ -35,8 +35,7 @@ Installing component module 'bigtop:bigtop_multiservice' ... Done.
 Installing component module 'bigtop-new:bigtop_base' ... Done.
 Resuming DTK Network import for service_module 'bigtop:spark' ... Done
 ```
-This output shows both the installation of the bigtop:spark service module as well as the installation of all the "compone
-module_directory: /home/dtk614-rich/dtk/service_modules/bigtop/sparknt modules" that it refers to. In these exercises we will not dig into the details of component modules, which can be thought of as the reusable building blocks for forming services.
+This output shows both the installation of the bigtop:spark service module as well as the installation of all the "component modules" that it refers to. In these exercises we will not dig into the details of component modules, which can be thought of as the reusable building blocks for forming services.
 
 The user can list the currently installed service modules with the commands:
 ```
@@ -63,22 +62,14 @@ dtk:/service-module>ls
 1 row in set
 ```
 ```
-
-
-List the service modules to show the installed service module and then navigate to the component module context to show the component modules that get installed as dependencies when installing the service module.
+If the user wants to see teh currently installed component modules, teh following commands can be used:
 ```
-ls
 cd /component-module
 ls
 
 ```
 
-**Commands and responses**
-
-
-
-dtk:/service-module>cd /component-module
-dtk:/component-module>ls
+The output would look like:
 +------------+----------------------------+-------------------------------------------------------------------------+------------+
 | ID         | NAME                       | REMOTE(S)                                                               | DSL PARSED |
 +------------+----------------------------+-------------------------------------------------------------------------+------------+
