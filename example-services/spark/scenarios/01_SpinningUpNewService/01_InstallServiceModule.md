@@ -1,12 +1,12 @@
 ## Install the Spark service module
-In order to deploy a services using the DevOps Toolkit (DTK), service modules must first be installed from the DTK Catalog Manager. The steps below shows installation of a service module that can deploy spark clusters.
+In order to deploy a services using the DevOps Toolkit (DTK), a service module must first be installed from the DTK Catalog Manager. The steps below show installation of a sample service module that is used to deploy a cluster that runs Spark in native cluster mode and HDFS. It has a topology with one master node and a set of slave/worker nodes that by default is set to 2, but as illustrated in a later scenario can be initially  or scaled to the desired size.
 
-We assume that user first entered the DTK shell from the Linux command line
+We assume that the user first entered the DTK shell from the Linux command line
 ```
 user@host:~$ dtk-shell
 dtk:/>
 ```
-In these Spark scenarios we will use a service module named 'bigtop:spark'. To install this service module into the user's local environment the following commands can be enterred after enterring teh DTK shell:
+In these Spark scenarios we will use a service module named 'bigtop:spark'. To install this service module into the user's local environment the following commands can be enterred after enterring the DTK shell:
 **Cut-and-paste**
 
 
@@ -15,7 +15,7 @@ cd /service-module
 install bigtop:spark
 
 ```
-The first command navigates to the "service module context" and teh second command does the actual installation. The dialog with user typing these commands and the DTK responses will look like:
+The first command navigates to the "service module context" and the second command does the actual installation. The dialog with the user's commands and the DTK responses will look like:
 ```
 dtk:/>cd /service-module
 dtk:/service-module>install bigtop:spark
@@ -35,7 +35,7 @@ Installing component module 'bigtop:bigtop_multiservice' ... Done.
 Installing component module 'bigtop-new:bigtop_base' ... Done.
 Resuming DTK Network import for service_module 'bigtop:spark' ... Done
 ```
-This shows both the installation of the bigtop:spark service module as well as the installtion of all the "compone
+This output shows both the installation of the bigtop:spark service module as well as the installation of all the "compone
 module_directory: /home/dtk614-rich/dtk/service_modules/bigtop/sparknt modules" that it refers to. In these exercises we will not dig into the details of component modules, which can be thought of as the reusable building blocks for forming services.
 
 The user can list the currently installed service modules with the commands:
