@@ -1,7 +1,7 @@
 ## Install the Spark service module
-In order to deploy services, service modules must first be installed from the DTK Catalog manager. Below shows installation of a service module that is used to deploy spark clusters
+In order to deploy a services using the DevOps Toolkit (DTK), service modules must first be installed from the DTK Catalog Manager. The steps below shows installation of a service module that can deploy spark clusters.
 
-In the text below and throughout the examples we provide both the commands in a form so they can be cut and paste and the full interactive session with user commands and the DTK responses. We assume that user first entered the dtk shell from the LInux command line
+In the text below and throughout the examples we provide both the commands in a form so they can be cut and paste along with the full interactive session with user commands and the DTK responses. We assume that user first entered the DTK shell from the Linux command line
 ```
 user@host:~$ dtk-shell
 dtk:/>
@@ -15,7 +15,7 @@ cd /service-module
 install bigtop:spark
 
 ```
-List the service modules to show the installed service module and then navigate to the component module context to show the component modules that get installed as dependencies when installing the service module
+List the service modules to show the installed service module and then navigate to the component module context to show the component modules that get installed as dependencies when installing the service module.
 ```
 ls
 cd /component-module
