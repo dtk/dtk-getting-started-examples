@@ -21,6 +21,12 @@ and will see something like:
 ```
 This shows the nodes and the members for each node group. In this example there is anode-group named 'slaves' that has two members that are denoted by 'slaves:1' and 'slaves:2'
 
+Components represent things like namenode, spark master, datanode etc daemons as well as anything that can be installed or configured. A component can live on a node or live on anodegroup to have a set nodes configured with the same daemon or sftware. Components can alo be "at the service level and not placed on a specific node or node-group. These are used to configure at the "service level". To see the components for spark-cluster1, the user can issue the commands:
+```
+cd /service/spark-cluster1
+list-components
+```
+and see something like
 ```
 dtk:/service/spark-cluster1>list-components
 +------------+-----------------------------------+
@@ -44,3 +50,6 @@ dtk:/service/spark-cluster1>list-components
 +------------+-----------------------------------+
 15 rows in set
 ```
+TODO: give a brief explanation of components above
+
+Other key parts of a service state are a set of attributes that can be attached to the node, node-groups, and components as well as "component links" thatcapture component dependencies. These wil be covreed under examoples that leverage these aspects
