@@ -1,5 +1,5 @@
 ## Internet Access for Spark Service
-After a service instance is deployed, if the user wants to access the service from the Internet, the user can use the 'list-nodes' command to see the host address that each node is on. Below is an example that shows the 'list-nodes' command for the 'spark-cluster1' command:
+After a service instance is deployed, if the user wants to access the service from the Internet, the user can use the 'list-nodes' command to see the host address that each node is on:
 ```
 dtk:/service/spark-cluster1>list-nodes
 +------------+----------+-------------+-----------+--------------+-----------+-------------------------------------------+
@@ -11,7 +11,7 @@ dtk:/service/spark-cluster1>list-nodes
 +------------+----------+-------------+-----------+--------------+-----------+-------------------------------------------+
 3 rows in set
 ```
-For the case of spark to view cluster status teh user can connect to the master node on port 8080, i.e., using the url:
+For the case of spark to view cluster status thd user can connect to the master node on port 8080, i.e., using the url:
 ```
 http://ec2-54-88-11-179.compute-1.amazonaws.com:8080
 ```
