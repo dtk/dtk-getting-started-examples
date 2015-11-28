@@ -1,7 +1,7 @@
 ## Loading a test data set (gitarchive)
 The service module 'bigtop:spark' used to deploy the service instance 'spark-cluster1' along with having an action defined to spin up a Spark and HDFS cluster, which was illustrated in the previous scenario, has other actions defined. In this set of steps we illustrate actions defined that load data into HDFS, clear loaded data and allow querying the files loaded from the DTK shell These are just example actions; a user who develops DTK modules can define actions appropriate for their deployments. To make things simple, we use a component explicitly designed to load in a specific example dataset [gitarchive dataset] (https://www.githubarchive.org/). General purpose loading actions could also be defined in DTK modules
 
-In this example, a datasaet named 'mar01' is created, its paramters are given and an action is performed to load the dataset into the HDFS cluster. The name 'mar01' is an arbitrary name, but will be defined through paramter settings to correspond to gitarchive dataset from Mar 1st 2015. This explicitly introduces "DTK components". In the previous scenario when the assembly 'bigtop:spark" was deployed forming service instance "spark-cluster1" it behind the scenes created a set of components in the service instance, each of which is placed on a node in the cluster
+In this example, a datasaet named 'mar01' is created, its paramters are given and an action is performed to load the dataset into the HDFS cluster. The name 'mar01' is an arbitrary name, but will be defined through paramter settings to correspond to gitarchive dataset from Mar 1st 2015. 
 ```
 dtk:/service/spark-cluster1>cd master
 dtk:/service/spark-cluster1/master>add-component datasets:gitarchive[mar01]
