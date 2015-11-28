@@ -1,2 +1,3 @@
 ## Examing the nodes and components constituting a service
- This explicitly introduces "DTK components". In the previous scenario when the assembly 'bigtop:spark" was deployed forming service instance "spark-cluster1" it behind the scenes created a set of components in the service instance, each of which is placed on a node in the cluster
+
+When the assembly "bigtop::spark" was deployed to create the service instance "spark-cluster1 the DTK server behind the scenes created in spark-cluster1 a model of the set of nodes and "components" that consititute the service. Within the DTK shell the user is able to query these nodes and components for any deployed or staged service instance. In this section we describe a few commands for querying the current state of a service and then in later scenarios show how teh user can add/delete and modfy these nodes and components and then perform actions to update the actual state of the deployed service.
