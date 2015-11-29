@@ -1,5 +1,5 @@
 ## Install the Spark service module
-In order to deploy a services using the DevOps Toolkit (DTK), a service module must first be installed from the DTK Catalog Manager. The steps below show installation of a sample service module that is used to deploy a cluster that runs Spark in native cluster mode and HDFS. It has a topology with one master node and a set of slave/worker nodes that by default is set to 2, but as illustrated in a later scenario can be initially set or first deployed then scaled up and down to desired sizes.
+In order to deploy a services using the DevOps Toolkit (DTK), a service module must first be installed from the DTK Catalog Manager. The steps below show installation of a sample service module that deploys a cluster that runs Spark in native cluster mode and HDFS. It has a topology with one master node and a set of slave/worker nodes that by default is set to 2, but as illustrated in a later scenario can be initially set to a different size as well as scaled up and down after it is deployed.
 
 We assume that the user first entered the DTK shell from the Linux command line
 ```
@@ -51,7 +51,7 @@ which in this scenario would show output:
 +------------+--------------+---------------------+------------+
 1 row in set
 ```
-Note: as explained in the perrequsite section we wil be giving cut and patse commands that make no assumption about what context the user is in the dtk shell. See these cut and paste fragments will typically start with 'cd /FULLPATH'. If the user wants to take advatage of the DTK shell contecxt mechanism, if teh user ws already in the 'serce-module; context, they simply can do 'ls' as shown below
+Note: as explained in the perrequsite section we wil be giving cut and patse commands that make no assumption about what context the user is in the DTK shell. Consequently, these cut and paste fragments will typically start with 'cd /FULLPATH'. If the user was already in the 'service-module; context, they simply can do 'ls' as shown below
 ```
 dtk:/service-module>ls
 +------------+--------------+---------------------+------------+
@@ -62,7 +62,7 @@ dtk:/service-module>ls
 1 row in set
 ```
 
-If the user wants to see teh currently installed component modules, teh following commands can be used:
+If the user wants to see the currently installed component modules, the following commands can be used:
 ```
 cd /component-module
 ls
