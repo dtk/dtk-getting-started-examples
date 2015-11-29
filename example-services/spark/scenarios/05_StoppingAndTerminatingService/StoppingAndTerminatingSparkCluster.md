@@ -1,3 +1,5 @@
+TODO: below just has console screenshots; text will be added to explain
+
 ```
 dtk:/service/spark-cluster1>list-nodes
 +------------+----------+-------------+-----------+--------------+-----------+----------+
