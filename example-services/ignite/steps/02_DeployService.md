@@ -1,4 +1,5 @@
-## Create annd deploy a service instance from an assembly
+## Deploy an Ignite cluster
+TODO: below just has console screenshots; text will be added to explain
 ```
 dtk:/>cd service-module
 dtk:/service-module>cd bigtop:ignite
