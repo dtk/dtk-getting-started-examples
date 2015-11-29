@@ -1,5 +1,5 @@
 ## Install the Spark service module
-In order to deploy a services using the DevOps Toolkit (DTK), a service module must first be installed from the DTK Catalog Manager. The steps below show installation of a sample service module that is used to deploy a cluster that runs Spark in native cluster mode and HDFS. It has a topology with one master node and a set of slave/worker nodes that by default is set to 2, but as illustrated in a later scenario can be initially  or scaled to the desired size.
+In order to deploy a services using the DevOps Toolkit (DTK), a service module must first be installed from the DTK Catalog Manager. The steps below show installation of a sample service module that is used to deploy a cluster that runs Spark in native cluster mode and HDFS. It has a topology with one master node and a set of slave/worker nodes that by default is set to 2, but as illustrated in a later scenario can be initially set or first deployed then scaled up and down to desired sizes.
 
 We assume that the user first entered the DTK shell from the Linux command line
 ```
