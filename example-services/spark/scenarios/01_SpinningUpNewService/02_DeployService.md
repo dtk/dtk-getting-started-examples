@@ -55,7 +55,7 @@ dtk:/service>ls
 ## Using task status to follow deployment of service
 When a service instance is launched, a task is used to keep track of its execution. The user interaction model is asynchronous meaning the user can be performing other actions in the DTK shell while the task is executing. To check the progress of am excuting task the user can use the 'task-status' command in a service instance context. In this example there is only one service instance 'spark-cluster1', but the DTK user could have simultaneously deployed a set of service instances and then navigate between them to see the status of each
 
-The task status command provides three different user interaction modes that are selected with different command lines options. To see a snapshot of the task progress, the following commands can be issued
+The task status command provides three different user interaction modes that are selected with different command line options. To see a snapshot of the task progress, the following commands can be issued
 ```
 cd /service/spark-cluster1
 task-status
@@ -103,7 +103,7 @@ A sample result is:
 +----------------------------------+-----------+---------------+----------+-------------------+-------------------+
 35 rows in set
 ```
-This shows exceution of task in the midst of execution that is deploying the Spark and HDFS. When an assembly is deployed for the first time in an EC2 environment the first stage creates all the needed nodes and the subsequent stages perform configuration or test actions. The exact steps performed are captured by workflows described in the Service module DSL (see ...)
+This shows execution of a task in the midst of execution that is deploying the Spark and HDFS cluster. When an assembly is deployed for the first time in an EC2 environment the first stage creates all the needed nodes and the subsequent stages perform configuration or smoke test actions. The exact steps performed is determined by the service module definitions, which in this case are the definitions in the ["bigtop:spark" service module] (https://github.com/dtk/getting-started-examples/blob/master/modules/service_modules/bigtop/spark/assemblies/cluster.dtk.assembly.yaml)
 
 Anoher mode for task status display is where the client blocks and streams the results as they are produced stage by stage:
 ```
@@ -263,4 +263,3 @@ As an example of a scenario where along with 'spark-cluster1' the user  also sta
 +------------+----------------+---------+-----------+-------------------------------+---------------+---------+-------------------+
 ```
 Since no tasks have been run yet for 'spark-cluster2' the column 'LAST RUN' has no value
-
