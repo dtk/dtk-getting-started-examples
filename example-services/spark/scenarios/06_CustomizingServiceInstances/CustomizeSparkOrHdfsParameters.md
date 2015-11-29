@@ -1,3 +1,5 @@
+TODO: below just has console screenshots; text will be added to explain
+
 ```
 dtk:/>cd service-module/bigtop:spark/
 service-module/bigtop:spark/assembly  service-module/bigtop:spark/remotes
@@ -93,4 +95,3 @@ DURATION: 6.6s
 ------------------------------------------------------------
 
 ```
-
