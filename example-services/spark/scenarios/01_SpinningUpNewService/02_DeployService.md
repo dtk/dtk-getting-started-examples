@@ -207,7 +207,7 @@ STDOUT:
 ```
 If 'task-status -m stream' is invoked after steps have actual been executed it will stil show the earlier steps that had executed
 
-The user can also display task status in a mode  similar to that of the Linux top command". This is accomplished with the commands:
+The user can also display task status in a mode  similar to that of the Linux "top"command. This is accomplished with the commands:
 ```
 cd /service/spark-cluster1
 task-status --wait
