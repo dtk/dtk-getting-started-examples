@@ -11,7 +11,7 @@ dtk:/service/spark-cluster1>list-nodes
 +------------+----------+-------------+-----------+--------------+-----------+-------------------------------------------+
 3 rows in set
 ```
-For the case of spark to view cluster status thd user can connect to the master node on port 8080, i.e., using the url:
+For the case of the Spark service, to view cluster status the user can connect to the master node on port 8080, i.e., using the url:
 ```
 http://ec2-54-88-11-179.compute-1.amazonaws.com:8080
 ```
@@ -33,7 +33,7 @@ dtk:/service/spark-cluster1>master info
 
 ```
 ## SSH Access
-If the user wants to ssh into a node, he or she can either use the node's host address as shown above, making sure that port 22 is open or can directly ssh into the node after copying the the ssh pem file to the machine with the dtk client. In this example we assume that the user is logged in as 'user1' when accessing the DTK shell. The user should copy the pem to location
+If the user wants to ssh into a node, he or she can either use the node's host address as shown above, making sure that port 22 is open or can directly ssh into the node from the DTK shell fter copying the the ssh pem file to the machine with the dtk client. In this example we assume that the user is logged in as 'user1' when accessing the DTK shell. The user should copy the pem to location
 ```
 /home/user1/dtk/dtk.pem
 ```
@@ -58,7 +58,7 @@ https://aws.amazon.com/amazon-linux-ami/2015.09-release-notes/
 Run "sudo yum update" to apply all updates.
 
 ```
-On the other had if the user wanted to log into node 'slaves:1', the following could be executed:
+As another example, if the user wanted to log into node 'slaves:1', the following could be executed:
 
 
 ```
