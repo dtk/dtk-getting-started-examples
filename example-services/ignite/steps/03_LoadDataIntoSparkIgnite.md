@@ -1,4 +1,5 @@
-## Load Data into hdfs
+## Load Data into HDFS, then create a shared RDD
+TODO: below just has console screenshots; text will be added to explain
 ```
 dtk:/service/ignite-cluster1>list-workflows
 +------------+-------------------------------+
@@ -349,5 +350,4 @@ res3: java.util.List[java.util.List[_]] = [[webwurst, 1], [McKnas, 1], [r0t0r-r0
 scala>
 
 ```
-
 
