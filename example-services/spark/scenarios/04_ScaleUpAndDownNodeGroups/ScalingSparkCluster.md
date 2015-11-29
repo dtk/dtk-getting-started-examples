@@ -1,4 +1,5 @@
 
+TODO: below just has console screenshots; text will be added to explain
 ```
 dtk:/service/spark-cluster1>set-attribute slaves/cardinality 4
 Status: OK
@@ -221,5 +222,4 @@ dtk:/service/spark-cluster1>list-nodes
 3 rows in set
 
 ```
-
 
