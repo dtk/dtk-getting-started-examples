@@ -12,7 +12,7 @@ cd /service-module/bigtop:spark
 list-assemblies
 
 ```
-Navigate to the 'cluster' assembly and deploy this cluster as service instance with name 'spark-cluster1'
+Navigate to the 'cluster' assembly and deploy an instance of it with name 'spark-cluster1'
 ```
 cd assembly/cluster
 deploy spark-cluster1
