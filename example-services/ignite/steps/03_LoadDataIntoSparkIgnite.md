@@ -7,6 +7,20 @@ This page describes the steps to
 * Creating an Ignite "Shared RDD" from this Spark dataframe
 * Querying the Ignite shared RDD
 
+
+In the [ignite assembly used to create this service instance] (https://github.com/dtk/getting-started-examples/blob/master/modules/service_modules/bigtop/ignite/assemblies/cluster.dtk.assembly.yaml) a sample dataset was explicitly included as captured by the assembly DSL fragment:
+```
+      - gitarchive[mar01]:
+          attributes:
+            owner: ec2-user
+            year: 2015
+            month: '03'
+            day: '01'
+
+
+```
+This is in contrast to the [scenario we used for Spark] (https://github.com/dtk/getting-started-examples/blob/master/example-services/spark/scenarios/03_LoadingTestDatasets/LoadGitArchiveDataSets.md) where the base assembly did not explicitly include a dataset and therefore user needed to first explicitly add a dataset by adding a DTK component.
+
 To see the set of actions available in the "ignite-cluster1" service instance the user can navigate to this service instance context and invoke the "list-workflows" command:
 ```
 dtk:/service/ignite-cluster1>list-workflows
@@ -22,21 +36,9 @@ dtk:/service/ignite-cluster1>list-workflows
 | 2147495788 | create_shared_spark_rdd       |
 +------------+-------------------------------+
 7 rows in set
+```
 
-In the [ignite assembly used to create this service instance] (https://github.com/dtk/getting-started-examples/blob/master/modules/service_modules/bigtop/ignite/assemblies/cluster.dtk.assembly.yaml) a sample dataset was explicitly included as captured by the assembly DSL fragment:
-```
-      - gitarchive[mar01]:
-          attributes:
-            owner: ec2-user
-            year: 2015
-            month: '03'
-            day: '01'
-
-
-```
-This is in contrast to the [scenario we used for Spark] (https://github.com/dtk/getting-started-examples/blob/master/example-services/spark/scenarios/03_LoadingTestDatasets/LoadGitArchiveDataSets.md) where the base assembly did not explicitly include a dataset and therefore user needed to first explicitly add a dataset by adding a DTK component.
-```
-```
+The user can then invoke the "hdfs_load_gitarchive_dataset" action on the dataset named "mar01" by using the following command:
 dtk:/service/ignite-cluster1>exec hdfs_load_gitarchive_dataset name=mar01 -s
 ========================= start 'hdfs_load_gitarchive_dataset' =========================
 
@@ -71,6 +73,10 @@ Status: OK
 
 ```
 ## Log into master Node and work in spark shell
+```
+TO create an Ignite shared RDD we show steps where the user logs into the Spark she'll on the master node. (Note: an enhancement to the DTK assembly that will be shortly implemented will use a DTK action to create the shared RDD)
+
+The steps below shows logging into the master node and then entering the spark she'll. the command line options on the spark-shell command are to [load in the Ignite jars using its "maven coordinates"] (http://apacheignite.gridgain.org/docs/testing-integration-with-spark-shell) along with loading in a jar with classes that are dynamically compiled by the DTK workflow that created the Ignite cluster (note: currently as an example two classes are dynamically created, one called Actor and another called Repo; added notes will be given about [use of a hash definition] (https://github.com/dtk/getting-started-examples/blob/master/modules/component_modules/bigtop/ignite/manifests/params/cache_object_meta_info.pp) that is input to have the DTK dynamically create the desired Java classes that represent the type of the Ignite face values)
 ```
 dtk:/service/ignite-cluster1>master ssh
 You are entering SSH terminal (ec2-user@ec2-54-164-28-171.compute-1.amazonaws.com) ...
