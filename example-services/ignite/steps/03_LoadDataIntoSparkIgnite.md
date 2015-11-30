@@ -75,10 +75,10 @@ Status: OK
 
 ```
 ## Log into master Node and work in spark shell
-```
-TO create an Ignite shared RDD we show steps where the user logs into the Spark she'll on the master node. (Note: an enhancement to the DTK assembly that will be shortly implemented will use a DTK action to create the shared RDD)
 
-The steps below shows logging into the master node and then entering the spark she'll. the command line options on the spark-shell command are to [load in the Ignite jars using its "maven coordinates"] (http://apacheignite.gridgain.org/docs/testing-integration-with-spark-shell) along with loading in a jar with classes that are dynamically compiled by the DTK workflow that created the Ignite cluster (note: currently as an example two classes are dynamically created, one called Actor and another called Repo; added notes will be given about [use of a hash definition] (https://github.com/dtk/getting-started-examples/blob/master/modules/component_modules/bigtop/ignite/manifests/params/cache_object_meta_info.pp) that is input to have the DTK dynamically create the desired Java classes that represent the type of the Ignite face values)
+TO create an Ignite shared RDD we show steps where the user logs into the Spark shell on the master node. (Note: an enhancement to the DTK assembly that will be shortly implemented will use a DTK action to create the shared RDD)
+
+The steps below shows logging into the master node and then entering the spark shell. The command line options on the spark-shell command are to [load in the Ignite jars using its "maven coordinates"] (http://apacheignite.gridgain.org/docs/testing-integration-with-spark-shell) along with loading in a jar with classes that are dynamically compiled by the DTK workflow that created the Ignite cluster (note: currently as an example two classes are dynamically created, one called Actor and another called Repo; added notes will be given about [use of a hash definition] (https://github.com/dtk/getting-started-examples/blob/master/modules/component_modules/bigtop/ignite/manifests/params/cache_object_meta_info.pp) that is input to have the DTK dynamically create the desired Java classes that represent the type of the Ignite face values)
 ```
 dtk:/service/ignite-cluster1>master ssh
 You are entering SSH terminal (ec2-user@ec2-54-164-28-171.compute-1.amazonaws.com) ...
