@@ -23,6 +23,18 @@ dtk:/service/ignite-cluster1>list-workflows
 +------------+-------------------------------+
 7 rows in set
 
+In the [ignite assembly used to create this service instance] (https://github.com/dtk/getting-started-examples/blob/master/modules/service_modules/bigtop/ignite/assemblies/cluster.dtk.assembly.yaml) a sample dataset was explicitly included as captured by the assembly DSL fragment:
+```
+      - gitarchive[mar01]:
+          attributes:
+            owner: ec2-user
+            year: 2015
+            month: '03'
+            day: '01'
+
+
+```
+This is in contrast to the [scenario we used for Spark] (https://github.com/dtk/getting-started-examples/blob/master/example-services/spark/scenarios/03_LoadingTestDatasets/LoadGitArchiveDataSets.md) where the base assembly did not explicitly include a dataset and therefore user needed to first explicitly add a dataset by adding a DTK component.
 ```
 ```
 dtk:/service/ignite-cluster1>exec hdfs_load_gitarchive_dataset name=mar01 -s
