@@ -1,15 +1,16 @@
 ## Deploy an Ignite cluster
-TODO: below just has console screenshots; text will be added to explain
+
+
+Navigate to the assembly called "cluster" in the service module "bigtop::ignite" and invoke the command "deploy ignite-cluster1" to spin up a service instance called "ignite-cluster1"
 ```
-dtk:/>cd service-module
-dtk:/service-module>cd bigtop:ignite
-assembly  remotes
-dtk:/service-module/bigtop:ignite>cd assembly/cluster
+dtk:/>cd service-module/bigtop:ignite/assembly/cluster
 dtk:/service-module/bigtop:ignite/assembly/cluster>deploy ignite-cluster1
   2147495590
   assembly_instance_name: ignite-cluster1
   task_id: 2147495877
 ```  
+
+Navigate to the launched service instance "ignite-cluster1" And to see progress the user can use the command "task status". Below shows screen shots invoking task-status using "snapshot mode" and then as an alternative "stream mode". For more details on checking task status and task completion see [Sections on task status in Spark example] (https://github.com/dtk/getting-started-examples/blob/master/example-services/spark/scenarios/01_SpinningUpNewService/02_DeployService.md)
 ```
 dtk:/service-module/bigtop:ignite/assembly/cluster>cd /service/ignite-cluster1
 dtk:/service/ignite-cluster1>task-status
