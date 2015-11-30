@@ -1,5 +1,6 @@
 ## Load Data into HDFS, then create a shared RDD
-TODO: below just has console screenshots; text will be added to explain
+TODO: below Is in the midst of having text added to the screenshot to provide explanation
+
 
 This page describes the steps to
 * Using a DTK action to load a git archive datasetbinto HDFS
